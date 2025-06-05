@@ -1,0 +1,21 @@
+{
+    "name": "Gestione Spese Familiari",
+    "short_name": "Spese App",
+    "description": "Una web app per la gestione del bilancio familiare.",
+    "icons": [
+{
+"src": "/static/icon-192x192.png",
+"type": "image/png",
+"sizes": "192x192"
+},
+{
+"src": "/static/icon-512x512.png",
+"type": "image/png",
+"sizes": "512x512"
+}
+],
+"start_url": "/",
+"display": "standalone",
+"background_color": "#ffffff",
+"theme_color": "#007bff"
+}

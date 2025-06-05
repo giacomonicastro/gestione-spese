@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="manifest" href="/static/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titolo }} - {{ nome_mese_corrente }}</title>
@@ -332,5 +333,16 @@
         });
         </script>
     </div>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/static/service-worker.js').then(function(registration) {
+                console.log('ServiceWorker registrato con successo!');
+            }, function(err) {
+                console.log('Registrazione del ServiceWorker fallita: ', err);
+            });
+        });
+    }
+</script>
 </body>
 </html>
