@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+    <link rel="manifest" href="/static/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ titolo_pagina }} - {{ nome_mese }}</title>
@@ -85,5 +86,12 @@
         <a href="{{ url_for('index', anno=current_anno, mese=current_mese) }}" class="link-torna">&laquo; Torna al Riepilogo Mensile</a>
 
     </div>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/static/service-worker.js');
+        });
+    }
+</script>
 </body>
 </html>
