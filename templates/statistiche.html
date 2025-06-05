@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titolo_pagina }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; }
+        h1, h2, h3, h4, h5 { color: #2c3e50; }
+        nav { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+        nav a { margin-right: 15px; text-decoration: none; color: #007bff; font-weight: bold;}
+        nav a:hover { text-decoration: underline; }
+        .form-selezione-periodo { margin-bottom: 30px; padding: 15px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; }
+        .form-selezione-periodo > div { display: flex; flex-direction: column; }
+        .form-selezione-periodo label { margin-bottom: 5px; font-weight: 500; }
+        .form-selezione-periodo select, .form-selezione-periodo button { padding: 8px 12px; border-radius: 4px; border: 1px solid #ced4da; font-size: 0.95em; }
+        .form-selezione-periodo button { background-color: #007bff; color: white; cursor: pointer; border-color: #007bff; }
+        .form-selezione-periodo button:hover { background-color: #0056b3; }
+        .contenuto-statistiche { margin-top: 20px; }
+        .contenuto-statistiche h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom:20px; }
+        table.statistiche-tabella { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        table.statistiche-tabella th, table.statistiche-tabella td { border: 1px solid #ddd; padding: 8px 10px; text-align: left; }
+        table.statistiche-tabella th { background-color: #f2f2f2; font-weight: bold; }
+        table.statistiche-tabella tfoot td { font-weight: bold; background-color: #f8f9fa; }
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: .25rem; }
+        .alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+        .grafici-container { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; }
+        .grafico-item { flex: 1; min-width: 300px; }
+        .grafico-item canvas { max-width: 100%; }
+        #graficoAndamentoRisparmi, #graficoAndamentoEntrate { max-width: 100%; margin-top: 30px; }
+        .lista-medie { list-style-type: none; padding-left: 0; margin-top: 10px; }
+        .lista-medie li { margin-bottom: 8px; font-size: 0.95em; padding: 5px; border-bottom: 1px dashed #eee; }
+        .lista-medie li:last-child { border-bottom: none; }
+
+        /* Stili per il report Forecast */
+        .forecast-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .forecast-card { background-color: #fff; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .forecast-card h5 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .forecast-card p { margin: 10px 0; font-size: 1.1em; }
+        .forecast-card .valore { font-size: 1.5em; font-weight: 600; color: #2c3e50; }
+        .gauge-bar { background-color: #e9ecef; border-radius: 5px; height: 25px; width: 100%; overflow: hidden; }
+        .gauge-bar-fill { height: 100%; border-radius: 5px; text-align: center; color: white; font-weight: bold; line-height: 25px; transition: width 0.5s ease-in-out; }
+        .interpretazione { margin-top: 15px; padding: 10px; border-radius: 5px; font-weight: 500; }
+        .interpretazione.ok { background-color: #d4edda; color: #155724; }
+        .interpretazione.attenzione { background-color: #fff3cd; color: #856404; }
+        .interpretazione.allarme { background-color: #f8d7da; color: #721c24; }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="{{ url_for('index') }}">Torna al Bilancio Mensile</a>
+        </nav>
+        <h1>{{ titolo_pagina }}</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category else 'info' }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('statistiche') }}" class="form-selezione-periodo">
+            <div>
+                <label for="anno_da">Da Anno:</label>
+                <select name="anno_da" id="anno_da">
+                    {% for anno_opt in anni_disponibili %}
+                        <option value="{{ anno_opt }}" {% if anno_opt == current_selected_anno_da %}selected{% endif %}>{{ anno_opt }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="mese_da">Da Mese:</label>
+                <select name="mese_da" id="mese_da">
+                    {% for num_mese, nome_mese_it in mesi_italiani.items() %}
+                        <option value="{{ num_mese }}" {% if num_mese == current_selected_mese_da %}selected{% endif %}>{{ nome_mese_it }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="anno_a">A Anno:</label>
+                <select name="anno_a" id="anno_a">
+                    {% for anno_opt in anni_disponibili %}
+                        <option value="{{ anno_opt }}" {% if anno_opt == current_selected_anno_a %}selected{% endif %}>{{ anno_opt }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="mese_a">A Mese:</label>
+                <select name="mese_a" id="mese_a">
+                    {% for num_mese, nome_mese_it in mesi_italiani.items() %}
+                        <option value="{{ num_mese }}" {% if num_mese == current_selected_mese_a %}selected{% endif %}>{{ nome_mese_it }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="report_type">Tipo di Report:</label>
+                <select name="report_type" id="report_type">
+                    {% for key, value in tipi_report_disponibili.items() %}
+                        <option value="{{ key }}" {% if key == current_selected_report_type %}selected{% endif %}>{{ value }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <button type="submit">Mostra Statistiche</button>
+            </div>
+        </form>
+
+        <div class="contenuto-statistiche">
+            {% if form_submitted %}
+                {% if dati_stat.messaggio_placeholder and not (dati_stat.lista_risparmi_mensili or dati_stat.dettaglio_spese_categoria or dati_stat.dettaglio_entrate_tipo or dati_stat.forecast_report) %}
+                    <p>{{ dati_stat.messaggio_placeholder }}</p>
+                {% else %}
+                    <h3>Statistiche per il periodo: {{ dati_stat.periodo_visualizzato_str }}</h3>
+
+                    {% if current_selected_report_type == 'risparmi' %}
+                        {% if dati_stat.lista_risparmi_mensili %}
+                            <h4>Risparmi Mensili</h4>
+                            <table class="statistiche-tabella">
+                                <thead>
+                                    <tr><th>Periodo</th><th>Risparmio Giacomo</th><th>Risparmio Erica</th><th>Risparmio Totale</th></tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in dati_stat.lista_risparmi_mensili %}
+                                    <tr>
+                                        <td>{{ item.periodo }}</td>
+                                        <td>{{ item.risparmio_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td>{{ item.risparmio_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td><strong>{{ item.risparmio_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                                {% if dati_stat.medie_risparmi %}
+                                <tfoot>
+                                    <tr>
+                                        <td><strong>Media Mensile</strong></td>
+                                        <td><strong>{{ dati_stat.medie_risparmi.giacomo|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        <td><strong>{{ dati_stat.medie_risparmi.erica|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        <td><strong>{{ dati_stat.medie_risparmi.totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                    </tr>
+                                </tfoot>
+                                {% endif %}
+                            </table>
+                            <h4>Andamento Risparmi</h4>
+                            <canvas id="graficoAndamentoRisparmi"></canvas>
+                            <script>
+                                if (document.getElementById('graficoAndamentoRisparmi')) {
+                                    const ctxRisparmi = document.getElementById('graficoAndamentoRisparmi').getContext('2d');
+                                    new Chart(ctxRisparmi, {
+                                        type: 'line',
+                                        data: {
+                                            labels: {{ dati_stat.chart_labels|tojson|safe }},
+                                            datasets: [
+                                                { label: 'Risparmio Giacomo', data: {{ dati_stat.chart_data_giacomo|tojson|safe }}, borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', fill: false, tension: 0.1 },
+                                                { label: 'Risparmio Erica', data: {{ dati_stat.chart_data_erica|tojson|safe }}, borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: false, tension: 0.1 },
+                                                { label: 'Risparmio Totale', data: {{ dati_stat.chart_data_totale|tojson|safe }}, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: false, tension: 0.1 }
+                                            ]
+                                        }, options: { responsive: true, scales: { y: { beginAtZero: false, ticks: { callback: function(value) { return value + ' €'; } } } } }
+                                    });
+                                }
+                            </script>
+                        {% elif dati_stat.messaggio_placeholder %}
+                            <p>{{ dati_stat.messaggio_placeholder }}</p>
+                        {% else %}
+                            <p>Nessun dato di risparmio trovato per il periodo selezionato.</p>
+                        {% endif %}
+
+                    {% elif current_selected_report_type == 'spese_categoria' %}
+                        {% if dati_stat.dettaglio_spese_categoria %}
+                            <h4>Dettaglio Spese per Categoria</h4>
+                            <table class="statistiche-tabella">
+                                <thead>
+                                    <tr><th>Categoria</th><th>Spesa Giacomo</th><th>Spesa Erica</th><th>Spesa Totale</th><th>Media Mensile Cat.</th></tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in dati_stat.dettaglio_spese_categoria %}
+                                    <tr>
+                                        <td>{{ item.categoria }}</td>
+                                        <td>{{ item.spesa_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td>{{ item.spesa_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td><strong>{{ item.spesa_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        <td><em>{{ item.media_mensile|format_decimali_italiano(con_euro=True) }}</em></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <h4>Distribuzione Spese (Grafici a Torta)</h4>
+                            <div class="grafici-container">
+                                {% if dati_stat.chart_spese_giacomo and dati_stat.chart_spese_giacomo.data and dati_stat.chart_spese_giacomo.data|length > 0 %}
+                                <div class="grafico-item">
+                                    <h5>Spese Giacomo</h5>
+                                    <canvas id="graficoSpeseGiacomo"></canvas>
+                                </div>
+                                {% endif %}
+                                {% if dati_stat.chart_spese_erica and dati_stat.chart_spese_erica.data and dati_stat.chart_spese_erica.data|length > 0 %}
+                                <div class="grafico-item">
+                                    <h5>Spese Erica</h5>
+                                    <canvas id="graficoSpeseErica"></canvas>
+                                </div>
+                                {% endif %}
+                            </div>
+                            <script>
+                                {% if dati_stat.chart_spese_giacomo and dati_stat.chart_spese_giacomo.data and dati_stat.chart_spese_giacomo.data|length > 0 %}
+                                if (document.getElementById('graficoSpeseGiacomo')) {
+                                    const ctxSpeseG = document.getElementById('graficoSpeseGiacomo').getContext('2d');
+                                    new Chart(ctxSpeseG, {type: 'pie',data: {labels: {{ dati_stat.chart_spese_giacomo.labels|tojson|safe }},datasets: [{label: 'Spese Giacomo',data: {{ dati_stat.chart_spese_giacomo.data|tojson|safe }},backgroundColor: ['rgba(255, 99, 132, 0.7)', 'rgba(54, 162, 235, 0.7)', 'rgba(255, 206, 86, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(199, 199, 199, 0.7)', 'rgba(83, 102, 255, 0.7)', 'rgba(100, 255, 64, 0.7)'],hoverOffset: 4}]}, options: { responsive: true, maintainAspectRatio: true }});
+                                }
+                                {% endif %}
+                                {% if dati_stat.chart_spese_erica and dati_stat.chart_spese_erica.data and dati_stat.chart_spese_erica.data|length > 0 %}
+                                if (document.getElementById('graficoSpeseErica')) {
+                                    const ctxSpeseE = document.getElementById('graficoSpeseErica').getContext('2d');
+                                    new Chart(ctxSpeseE, {type: 'pie',data: {labels: {{ dati_stat.chart_spese_erica.labels|tojson|safe }},datasets: [{label: 'Spese Erica',data: {{ dati_stat.chart_spese_erica.data|tojson|safe }},backgroundColor: ['rgba(54, 162, 235, 0.7)', 'rgba(255, 99, 132, 0.7)', 'rgba(75, 192, 192, 0.7)', 'rgba(255, 206, 86, 0.7)', 'rgba(255, 159, 64, 0.7)', 'rgba(153, 102, 255, 0.7)', 'rgba(100, 255, 64, 0.7)', 'rgba(199, 199, 199, 0.7)', 'rgba(83, 102, 255, 0.7)'],hoverOffset: 4}]}, options: { responsive: true, maintainAspectRatio: true }});
+                                }
+                                {% endif %}
+                            </script>
+                        {% elif dati_stat.messaggio_placeholder %}
+                            <p>{{ dati_stat.messaggio_placeholder }}</p>
+                        {% else %}
+                            <p>Nessun dato di spesa per categoria trovato.</p>
+                        {% endif %}
+
+                    {% elif current_selected_report_type == 'entrate_tipo' %}
+                        {% if dati_stat.dettaglio_entrate_tipo or (dati_stat.chart_entrate_labels and dati_stat.chart_entrate_labels|length > 0) %}
+                            <h4>Dettaglio Entrate per Tipo</h4>
+                            {% if dati_stat.dettaglio_entrate_tipo %}
+                            <table class="statistiche-tabella">
+                                <thead>
+                                    <tr><th>Tipo Entrata</th><th>Entrate Giacomo</th><th>Entrate Erica</th><th>Entrate Totali</th></tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in dati_stat.dettaglio_entrate_tipo %}
+                                    <tr>
+                                        <td>{{ item.tipo }}</td>
+                                        <td>{{ item.entrata_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td>{{ item.entrata_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                        <td><strong>{{ item.entrata_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% endif %}
+                            {% if dati_stat.medie_entrate %}
+                            <h4>Medie Mensili Entrate</h4>
+                            <ul class="lista-medie">
+                                <li>Media Entrate Giacomo: <strong>{{ dati_stat.medie_entrate.giacomo|format_decimali_italiano(con_euro=True) }}</strong></li>
+                                <li>Media Entrate Erica: <strong>{{ dati_stat.medie_entrate.erica|format_decimali_italiano(con_euro=True) }}</strong></li>
+                                <li>Media Entrate Totali: <strong>{{ dati_stat.medie_entrate.totale|format_decimali_italiano(con_euro=True) }}</strong></li>
+                            </ul>
+                            {% endif %}
+                            {% if dati_stat.chart_entrate_labels and dati_stat.chart_entrate_labels|length > 0 %}
+                            <h4>Andamento Entrate</h4>
+                            <canvas id="graficoAndamentoEntrate"></canvas>
+                            <script>
+                                if (document.getElementById('graficoAndamentoEntrate')) {
+                                    const ctxEntrate = document.getElementById('graficoAndamentoEntrate').getContext('2d');
+                                    new Chart(ctxEntrate, {type: 'line',data: {labels: {{ dati_stat.chart_entrate_labels|tojson|safe }},datasets: [{ label: 'Entrate Giacomo', data: {{ dati_stat.chart_entrate_data_giacomo|tojson|safe }}, borderColor: 'rgba(255, 99, 132, 1)', backgroundColor: 'rgba(255, 99, 132, 0.2)', fill: false, tension: 0.1 },{ label: 'Entrate Erica', data: {{ dati_stat.chart_entrate_data_erica|tojson|safe }}, borderColor: 'rgba(54, 162, 235, 1)', backgroundColor: 'rgba(54, 162, 235, 0.2)', fill: false, tension: 0.1 },{ label: 'Entrate Totali', data: {{ dati_stat.chart_entrate_data_totale|tojson|safe }}, borderColor: 'rgba(75, 192, 192, 1)', backgroundColor: 'rgba(75, 192, 192, 0.2)', fill: false, tension: 0.1 }]}, options: { responsive: true, scales: { y: { beginAtZero: false, ticks: { callback: function(value) { return value + ' €'; } } } } }});
+                                }
+                            </script>
+                            {% endif %}
+                        {% elif dati_stat.messaggio_placeholder %}
+                             <p>{{ dati_stat.messaggio_placeholder }}</p>
+                        {% else %}
+                            <p>Nessun dato di entrata per tipo trovato.</p>
+                        {% endif %}
+
+                    {% elif current_selected_report_type == 'rapporto_entrate_spese' %}
+                        
+                        {# --- DEFINIZIONE MACRO PER NON RIPETERE CODICE --- #}
+                        {% macro render_forecast_bar(title, percentage) %}
+                            <div style="margin-top: 20px;">
+                                <h5>{{ title }}</h5>
+                                <p>Le spese previste rappresentano il <strong style="font-size: 1.2em;">{{ "%.1f"|format(percentage) }}%</strong> delle entrate previste.</p>
+                                
+                                {% set perc = percentage|round|int %}
+                                {% set bar_color = '#6c757d' %} {# Grigio di default #}
+                                {% set text_class = '' %}
+                                {% set text_message = '' %}
+                                
+                                {% if perc < 70 %}
+                                    {% set bar_color = '#28a745' %} {# Verde #}
+                                    {% set text_class = 'ok' %}
+                                    {% set text_message = '<strong>Ottimo!</strong> Hai un solido margine di risparmio.' %}
+                                {% elif perc < 100 %}
+                                    {% set bar_color = '#ffc107' %} {# Giallo #}
+                                    {% set text_class = 'attenzione' %}
+                                    {% set text_message = '<strong>Attenzione.</strong> Il tuo margine di risparmio è ridotto. Cerca di fare di meglio.' %}
+                                {% else %}
+                                    {% set bar_color = '#dc3545' %} {# Rosso #}
+                                    {% set text_class = 'allarme' %}
+                                    {% set text_message = '<strong>Allarme!</strong> Le tue spese previste superano le entrate. Bisogna fare di meglio!' %}
+                                {% endif %}
+                                
+                                <div class="gauge-bar">
+                                    <div class="gauge-bar-fill" style="width: {{ 100 if perc > 100 else perc }}%; background-color: {{ bar_color }};">
+                                        {{ "%.1f"|format(percentage) }}%
+                                    </div>
+                                </div>
+                                <p class="interpretazione {{ text_class }}">{{ text_message|safe }}</p>
+                            </div>
+                        {% endmacro %}
+                        {# --- FINE DEFINIZIONE MACRO --- #}
+
+                        {% if dati_stat.forecast_report %}
+                            {% set report = dati_stat.forecast_report %}
+                            <h4>Forecast Annuale basato su {{ report.periodo_mesi }} mes{{ 'i' if report.periodo_mesi > 1 else 'e' }}</h4>
+                            <p>Questo report analizza l'andamento nel periodo selezionato per proiettare le finanze su base annuale.</p>
+
+                            <div class="forecast-container">
+                                <div class="forecast-card">
+                                    <h5>Medie Mensili Totali</h5>
+                                    <p>Entrate: <span class="valore">{{ report.totale.media_entrate|format_decimali_italiano }}</span></p>
+                                    <p>Spese: <span class="valore">{{ report.totale.media_spese|format_decimali_italiano }}</span></p>
+                                    <p>Risparmio: <span class="valore" style="color: {{ '#28a745' if report.totale.media_risparmio >= 0 else '#dc3545' }}">{{ report.totale.media_risparmio|format_decimali_italiano }}</span></p>
+                                </div>
+
+                                <div class="forecast-card">
+                                    <h5>Forecast Annuale Totale</h5>
+                                    <p>Entrate: <span class="valore">{{ report.totale.forecast_entrate|format_decimali_italiano }}</span></p>
+                                    <p>Spese: <span class="valore">{{ report.totale.forecast_spese|format_decimali_italiano }}</span></p>
+                                    <p>Risparmio: <span class="valore" style="color: {{ '#28a745' if report.totale.forecast_risparmio >= 0 else '#dc3545' }}">{{ report.totale.forecast_risparmio|format_decimali_italiano }}</span></p>
+                                </div>
+                            </div>
+
+                            <div class="forecast-card" style="margin-top: 20px;">
+                                {{ render_forecast_bar("Rapporto Totale", report.totale.rapporto_percentuale) }}
+                                <hr style="margin: 30px 0;">
+                                {{ render_forecast_bar("Rapporto Giacomo", report.giacomo.rapporto_percentuale) }}
+                                <hr style="margin: 30px 0;">
+                                {{ render_forecast_bar("Rapporto Erica", report.erica.rapporto_percentuale) }}
+                            </div>
+
+                        {% elif dati_stat.messaggio_placeholder %}
+                            <p>{{ dati_stat.messaggio_placeholder }}</p>
+                        {% else %}
+                            <p>Non è stato possibile generare il report. Assicurati che ci siano entrate e spese nel periodo selezionato.</p>
+                        {% endif %}
+                    
+                    {% elif dati_stat.messaggio_placeholder %}
+                        <p>{{ dati_stat.messaggio_placeholder }}</p>
+                    {% else %}
+                        <p>Seleziona un tipo di report valido o nessun dato disponibile per la selezione corrente.</p>
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                <p>Seleziona un periodo "Da - A" e un tipo di report per visualizzare le statistiche.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

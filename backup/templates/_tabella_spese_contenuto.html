@@ -1,0 +1,28 @@
+<tbody>
+    {% for spesa_agg in spese_mese_dettagliate %}
+    <tr>
+        <td>{{ spesa_agg.categoria }}</td>
+        <td>{{ spesa_agg.importo_giacomo|format_decimali_italiano(con_euro=False) }}</td>
+        <td>{{ spesa_agg.importo_erica|format_decimali_italiano(con_euro=False) }}</td>
+        <td><strong>{{ spesa_agg.importo_totale_categoria|format_decimali_italiano(con_euro=False) }}</strong></td>
+        <td>
+            <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg.categoria) }}">
+                Vedi Dettagli
+            </a>
+        </td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="5" style="text-align:center;">Nessuna spesa di questa categoria per il periodo selezionato.</td>
+    </tr>
+    {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <th style="text-align:right;">Totale Complessivo:</th>
+        <th>{{ spese_giacomo|format_decimali_italiano(con_euro=False) }}</th>
+        <th>{{ spese_erica|format_decimali_italiano(con_euro=False) }}</th>
+        <th>{{ totale_spese_mese|format_decimali_italiano(con_euro=False) }}</th>
+        <td></td>
+    </tr>
+</tfoot>

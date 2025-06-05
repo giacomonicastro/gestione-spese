@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titolo }} - {{ nome_mese_corrente }}</title>
+    <style>
+        /* Il tuo CSS rimane invariato come nell'ultima versione che funzionava bene esteticamente */
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; }
+        h1, h2, h3 { color: #2c3e50; }
+        .navigazione-mesi { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 12px 15px; background-color: #e9ecef; border-radius: 5px; border: 1px solid #dee2e6; }
+        .navigazione-mesi a { text-decoration: none; color: #007bff; font-weight: bold; padding: 8px 15px; border-radius: 4px; background-color: #fff; border: 1px solid #007bff; transition: all 0.2s ease-in-out; }
+        .navigazione-mesi a:hover { background-color: #007bff; color: white; }
+        .navigazione-mesi h3 { margin: 0; font-size: 1.5em; color: #495057; }
+        .riquadri-sommario { display: flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 30px; text-align: center; gap: 15px; }
+        .riquadri-sommario > div { padding: 15px; border: 1px solid transparent; border-radius: 8px; flex-basis: calc(33.333% - 10px); min-width: 220px; box-shadow: 0 2px 5px rgba(0,0,0,0.07); box-sizing: border-box;}
+        .riquadri-sommario h4 { margin-top: 0; margin-bottom: 10px; font-size: 1.1em; color: #495057;}
+        .riquadri-sommario p { font-size: 1.1em; margin: 5px 0; }
+        .riquadri-sommario span.totale-persona-valore { font-size: 1.3em; font-weight: bold; margin-top: 8px;}
+        .riquadri-sommario hr { border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 10px 0; }
+        .riquadri-sommario .totale-complessivo p {font-size: 1.4em; font-weight: bold; margin-top:10px;}
+        .entrate-sommario { background-color: #e6ffed; border-color: #b3e6b3;}
+        .entrate-sommario span.totale-persona-valore, .entrate-sommario .totale-complessivo p { color: #28a745; }
+        .spese-sommario { background-color: #ffe6e6; border-color: #ffb3b3;}
+        .spese-sommario span.totale-persona-valore, .spese-sommario .totale-complessivo p { color: #dc3545; }
+        .risparmio-sommario { background-color: #e6f7ff; border-color: #b3d7ff;}
+        .risparmio-sommario span.totale-persona-valore, .risparmio-sommario .totale-complessivo p { color: #007bff; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: middle; }
+        th { background-color: #f8f9fa; font-weight: 600; color: #495057; }
+        tr:nth-child(even) { background-color: #fdfdfd; }
+        td a { color: #007bff; text-decoration: none; font-weight: 500; }
+        td a:hover { text-decoration: underline; color: #0056b3; }
+        tfoot th, tfoot td { font-weight: bold; background-color: #e9ecef; }
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: .25rem; }
+        .alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
+        .alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+        .alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
+        .alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
+        form.form-aggiungi-transazione { border: 1px solid #ced4da; padding: 25px; border-radius: 5px; background-color: #f8f9fa; margin-bottom: 30px; }
+        form.form-aggiungi-transazione h2 { margin-top: 0; margin-bottom: 20px; }
+        form.form-aggiungi-transazione div { margin-bottom: 18px; }
+        form.form-aggiungi-transazione label { display: block; margin-bottom: 6px; font-weight: 500; color: #495057; }
+        form.form-aggiungi-transazione label[for="tipo_spesa"],
+        form.form-aggiungi-transazione label[for="tipo_entrata"] { font-weight: normal; display: inline; margin-right: 15px; margin-left: 3px; }
+        form.form-aggiungi-transazione input[type="text"],
+        form.form-aggiungi-transazione input[type="number"],
+        form.form-aggiungi-transazione input[type="date"],
+        form.form-aggiungi-transazione select { width: 100%; padding: 10px 12px; border: 1px solid #ced4da; border-radius: 4px; box-sizing: border-box; font-size: 1rem; background-color: #fff; }
+        form.form-aggiungi-transazione input:focus,
+        form.form-aggiungi-transazione select:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 .2rem rgba(0,123,255,.25); }
+        form.form-aggiungi-transazione button[type="submit"] { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 1.05em; transition: background-color 0.2s ease-in-out; }
+        form.form-aggiungi-transazione button[type="submit"]:hover { background-color: #218838; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 30px 0; }
+        .messaggio-feedback { padding: 10px; margin-top: 15px; margin-bottom: 15px; border-radius: 4px; font-weight: bold; text-align: center; }
+        .messaggio-successo { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .messaggio-errore { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titolo }}</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category else 'info' }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="navigazione-mesi">
+            <a href="{{ url_for('index', anno=anno_prec, mese=mese_prec) }}">&laquo; Mese Prec.</a>
+            <h3>{{ nome_mese_corrente }}</h3>
+            <a href="{{ url_for('index', anno=anno_succ, mese=mese_succ) }}">Mese Succ. &raquo;</a>
+        </div>
+
+        <div class="riquadri-sommario">
+            <div class="entrate-sommario">
+                <h4>Entrate del Mese</h4>
+                <p>Giacomo: <span class="totale-persona-valore" id="summary-entrate-giacomo">{{ entrate_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore" id="summary-entrate-erica">{{ entrate_erica }}</span></p>
+                <hr>
+                <div class="totale-complessivo"><p id="summary-entrate-totale">Totale: {{ totale_entrate_mese }}</p></div>
+            </div>
+            <div class="spese-sommario">
+                <h4>Spese del Mese</h4>
+                <p>Giacomo: <span class="totale-persona-valore" id="summary-spese-giacomo">{{ spese_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore" id="summary-spese-erica">{{ spese_erica }}</span></p>
+                <hr>
+                <div class="totale-complessivo"><p id="summary-spese-totale">Totale: {{ totale_spese_mese }}</p></div>
+            </div>
+            <div class="risparmio-sommario">
+                <h4>Risparmio del Mese</h4>
+                <p>Giacomo: <span class="totale-persona-valore" id="summary-risparmio-giacomo">{{ risparmio_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore" id="summary-risparmio-erica">{{ risparmio_erica }}</span></p>
+                <hr>
+                <div class="totale-complessivo"><p id="summary-risparmio-totale">Totale: {{ risparmio_mese }}</p></div>
+            </div>
+        </div>
+
+        {% if entrate_mese_dettagliate is defined %} <h2>Riepilogo Entrate</h2>
+            <table id="tabella-entrate">
+                <thead>
+                    <tr>
+                        <th>Tipo Entrata</th>
+                        <th>Giacomo (€)</th>
+                        <th>Erica (€)</th>
+                        <th>Totale Tipo (€)</th>
+                        <th>Dettagli</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-entrate">
+                    {% for entrata_agg in entrate_mese_dettagliate %}
+                    <tr>
+                        <td>{{ entrata_agg['tipo_entrata'] }}</td>
+                        <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=False) }}</strong></td>
+                        <td>
+                            <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
+                                Vedi Dettagli
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align:center;">Nessuna entrata registrata per questo mese.</td></tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot id="tfoot-entrate">
+                    <tr>
+                        <th style="text-align:right;">Totale Complessivo:</th>
+                        <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        {% else %}
+             <p>Nessuna entrata registrata per {{ nome_mese_corrente }}. (Blocco da rivedere se `entrate_mese_dettagliate` è sempre definito come lista vuota)</p>
+        {% endif %}
+
+        <h2>Riepilogo Spese</h2>
+        {% if spese_mese_dettagliate is defined %} <table id="tabella-spese">
+                <thead>
+                    <tr>
+                        <th>Categoria Spesa</th>
+                        <th>Giacomo (€)</th>
+                        <th>Erica (€)</th>
+                        <th>Totale Categoria (€)</th>
+                        <th>Dettagli Spese</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody-spese">
+                    {% for spesa_agg in spese_mese_dettagliate %}
+                    <tr>
+                        <td>{{ spesa_agg['categoria'] }}</td>
+                        <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=False) }}</strong></td>
+                        <td>
+                            <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg['categoria']) }}">
+                                Vedi Dettagli
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5" style="text-align:center;">Nessuna spesa registrata per questo mese.</td></tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot id="tfoot-spese">
+                    <tr>
+                        <th style="text-align:right;">Totale Complessivo:</th>
+                        <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        {% else %}
+            <p>Nessuna spesa registrata per {{ nome_mese_corrente }}. (Blocco da rivedere se `spese_mese_dettagliate` è sempre definito come lista vuota)</p>
+        {% endif %}
+
+        <hr>
+        <form id="formAggiungiTransazione" class="form-aggiungi-transazione" action="{{ url_for('aggiungi_transazione') }}" method="post">
+            <h2>Aggiungi Nuova Transazione</h2>
+            <div id="messaggioFormTransazione" class="messaggio-feedback" style="display:none;"></div>
+            <div> <label>Tipo Transazione:</label> <input type="radio" name="tipo_transazione" value="spesa" id="tipo_spesa" checked onchange="aggiornaCampiForm()"> <label for="tipo_spesa">Spesa</label> <input type="radio" name="tipo_transazione" value="entrata" id="tipo_entrata" onchange="aggiornaCampiForm()"> <label for="tipo_entrata">Entrata</label> </div>
+            <div> <label for="data">Data:</label> <input type="date" id="data" name="data" value="{{ datetime.today().strftime('%Y-%m-%d') }}" required> </div>
+            <div> <label for="importo">Importo (€):</label> <input type="number" id="importo" name="importo" step="0.01" placeholder="Es. 55.70" required> </div>
+            <div id="campi_spesa"> <div> <label for="categoria_spesa_select">Categoria Spesa:</label> <select id="categoria_spesa_select" name="categoria_spesa_select" required> <option value="" disabled selected>Seleziona una categoria...</option> {% for categoria_opt in categorie_spesa_disponibili %} <option value="{{ categoria_opt }}">{{ categoria_opt }}</option> {% endfor %} </select> </div> <div> <label for="descrizione_spesa">Descrizione Spesa (Opzionale):</label> <input type="text" id="descrizione_spesa" name="descrizione_spesa" placeholder="Dettaglio aggiuntivo (es. Supermercato specific)"> </div> <div> <label for="pagato_da">Pagato da (Spesa):</label> <select id="pagato_da" name="pagato_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
+            <div id="campi_entrata" style="display:none;"> <div> <label for="tipo_entrata_val">Tipo Entrata:</label> <select id="tipo_entrata_val" name="tipo_entrata_val" required> <option value="Stipendio">Stipendio</option> <option value="Bonus">Bonus</option> <option value="Regalo">Regalo</option> <option value="Vendita">Vendita</option> <option value="Extra">Entrata Extra</option> <option value="Altro">Altro</option> </select> </div> <div> <label for="descrizione_entrata">Descrizione/Motivazione Entrata (Opzionale):</label> <input type="text" id="descrizione_entrata" name="descrizione_entrata" placeholder="Es. Stipendio mese, Vendita oggetto X"> </div> <div> <label for="ricevuto_da">Ricevuto da (Entrata):</label> <select id="ricevuto_da" name="ricevuto_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
+            <div> <button type="submit">Aggiungi Transazione</button> </div>
+        </form>
+        
+        <script>
+        function aggiornaCampiForm() { /* ... invariata ... */ 
+            var tipoSpesa = document.getElementById('tipo_spesa').checked;
+            var campiSpesaDiv = document.getElementById('campi_spesa');
+            var campiEntrataDiv = document.getElementById('campi_entrata');
+            campiSpesaDiv.style.display = tipoSpesa ? 'block' : 'none';
+            campiEntrataDiv.style.display = !tipoSpesa ? 'block' : 'none';
+            document.getElementById('categoria_spesa_select').required = tipoSpesa;
+            document.getElementById('descrizione_spesa').required = false; 
+            document.getElementById('pagato_da').required = tipoSpesa;
+            document.getElementById('tipo_entrata_val').required = !tipoSpesa;
+            document.getElementById('descrizione_entrata').required = false; 
+            document.getElementById('ricevuto_da').required = !tipoSpesa;
+        }
+
+        function aggiornaElemento(id, valoreFormattato, prefisso = "") { /* ... invariata ... */
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                let testoFinale = prefisso + valoreFormattato; 
+                // console.log(`AGGIORNAMENTO JS (riquadro/tfoot cell): ID '${id}' impostato a: '${testoFinale}'`);
+                elemento.textContent = testoFinale;
+            } else {
+                console.error(`ERRORE JS: Elemento per riquadro/tfoot cell con ID '${id}' NON TROVATO!`);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            aggiornaCampiForm();
+            const formAggiungi = document.getElementById('formAggiungiTransazione');
+            const divMessaggioForm = document.getElementById('messaggioFormTransazione');
+
+            if (formAggiungi) {
+                formAggiungi.addEventListener('submit', function(event) {
+                    event.preventDefault(); 
+                    const formData = new FormData(formAggiungi);
+                    const actionUrl = formAggiungi.action;
+                    const submitButton = formAggiungi.querySelector('button[type="submit"]');
+                    
+                    if(submitButton) { submitButton.disabled = true; submitButton.textContent = 'Invio...'; }
+
+                    fetch(actionUrl, { method: 'POST', body: formData })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                let errorMsg = `Errore dal server: ${response.status}`;
+                                try { 
+                                    const errData = JSON.parse(text);
+                                    if (errData && errData.messaggio) { errorMsg = errData.messaggio; }
+                                } catch (e) { /* Non fa niente */ }
+                                throw new Error(errorMsg);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Dati JSON ricevuti:", JSON.stringify(data, null, 2)); 
+                        divMessaggioForm.textContent = data.messaggio;
+                        
+                        if (data.status === 'successo') {
+                            divMessaggioForm.className = 'messaggio-feedback messaggio-successo';
+                            formAggiungi.reset(); 
+                            aggiornaCampiForm();
+                            
+                            if (data.sommario_aggiornato) {
+                                // Aggiorna Riquadri Sommario
+                                aggiornaElemento('summary-entrate-giacomo', data.sommario_aggiornato.entrate_giacomo_str);
+                                aggiornaElemento('summary-entrate-erica', data.sommario_aggiornato.entrate_erica_str);
+                                aggiornaElemento('summary-entrate-totale', data.sommario_aggiornato.totale_entrate_str, "Totale: ");
+                                aggiornaElemento('summary-spese-giacomo', data.sommario_aggiornato.spese_giacomo_str);
+                                aggiornaElemento('summary-spese-erica', data.sommario_aggiornato.spese_erica_str);
+                                aggiornaElemento('summary-spese-totale', data.sommario_aggiornato.totale_spese_str, "Totale: ");
+                                aggiornaElemento('summary-risparmio-giacomo', data.sommario_aggiornato.risparmio_giacomo_str);
+                                aggiornaElemento('summary-risparmio-erica', data.sommario_aggiornato.risparmio_erica_str);
+                                aggiornaElemento('summary-risparmio-totale', data.sommario_aggiornato.totale_risparmio_str, "Totale: ");
+                            }
+
+                            // Aggiorna Tabella Entrate
+                            if (data.html_tbody_entrate !== undefined && data.html_tfoot_entrate !== undefined) {
+                                const tbodyEntrate = document.getElementById('tbody-entrate');
+                                const tfootEntrate = document.getElementById('tfoot-entrate');
+                                if (tbodyEntrate) { tbodyEntrate.innerHTML = data.html_tbody_entrate; }
+                                if (tfootEntrate) { tfootEntrate.innerHTML = data.html_tfoot_entrate; }
+                                console.log("Tabella entrate (tbody e tfoot) aggiornata.");
+                            } else { console.warn("Dati HTML per tabella entrate mancanti nel JSON.");}
+
+                            // Aggiorna Tabella Spese
+                            if (data.html_tbody_spese !== undefined && data.html_tfoot_spese !== undefined) {
+                                const tbodySpese = document.getElementById('tbody-spese');
+                                const tfootSpese = document.getElementById('tfoot-spese');
+                                if (tbodySpese) { tbodySpese.innerHTML = data.html_tbody_spese; }
+                                if (tfootSpese) { tfootSpese.innerHTML = data.html_tfoot_spese; }
+                                console.log("Tabella spese (tbody e tfoot) aggiornata.");
+                            } else { console.warn("Dati HTML per tabella spese mancanti nel JSON.");}
+
+                        } else { 
+                            divMessaggioForm.className = 'messaggio-feedback messaggio-errore';
+                        }
+                        divMessaggioForm.style.display = 'block';
+                    })
+                    .catch(error => { 
+                        console.error('Errore fetch:', error);
+                        divMessaggioForm.textContent = error.message || 'Errore di comunicazione.';
+                        divMessaggioForm.className = 'messaggio-feedback messaggio-errore';
+                        divMessaggioForm.style.display = 'block';
+                    })
+                    .finally(() => {
+                        if(submitButton) { submitButton.disabled = false; submitButton.textContent = 'Aggiungi Transazione';}
+                    });
+                });
+            }
+        });
+        </script>
+    </div>
+</body>
+</html>
