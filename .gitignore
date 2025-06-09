@@ -1,2 +1,5 @@
-"__pycache__/" 
-"spese.db" 
+# Aggiunge il database al file .gitignore
+echo "spese.db" > .gitignore
+
+# Aggiunge anche le cartelle di cache di Python (buona pratica)
+echo "__pycache__/" >> .gitignore
