@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titolo_pagina }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background-color: #f4f7f6; color: #333; }
+        .container { max-width: 1200px; margin: auto; }
+        h1, h2 { color: #2c3e50; }
+        h1 { text-align: center; margin-bottom: 5px;}
+        .periodo-subtitle { text-align: center; margin-top: 0; margin-bottom: 30px; font-size: 1.2em; color: #666; }
+        .report-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; }
+        .report-column { background-color: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border-bottom: 1px solid #ddd; padding: 12px 8px; text-align: left; }
+        th { font-weight: bold; color: #555; }
+        tr:last-child td { border-bottom: none; }
+        .importo { font-weight: bold; text-align: right; }
+        .pagato-da-Giacomo { color: #dc3545; font-weight: 500; }
+        .pagato-da-Erica { color: #007bff; font-weight: 500; }
+        .no-data { text-align: center; padding: 30px; color: #777; }
+        .link-torna { display: block; text-align: center; margin-top: 30px; color: #007bff; }
+        
+        /* NUOVA REGOLA CSS PER LA DATA */
+        .cella-data {
+            white-space: nowrap; /* Impedisce al testo di andare a capo */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titolo_pagina }}</h1>
+        <p class="periodo-subtitle">{{ periodo }}</p>
+
+        <div class="report-grid">
+            
+            <div class="report-column">
+                <h2>Classifica Totale</h2>
+                {% if spese_totali %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Categoria</th>
+                                <th>Pagato da</th>
+                                <th style="text-align: right;">Importo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for spesa in spese_totali %}
+                            <tr>
+                                {# MODIFICHE QUI SOTTO: aggiunta classe e cambio formato data #}
+                                <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                <td>{{ spesa.categoria }}<br><small>{{ spesa.descrizione }}</small></td>
+                                <td class="pagato-da-{{ spesa.pagato_da }}">{{ spesa.pagato_da }}</td>
+                                <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-data">Nessuna spesa trovata in questo periodo.</p>
+                {% endif %}
+            </div>
+
+            <div class="report-column">
+                <h2>Top Spese Giacomo</h2>
+                {% if spese_giacomo %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Categoria</th>
+                                <th style="text-align: right;">Importo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for spesa in spese_giacomo %}
+                            <tr>
+                                {# MODIFICHE QUI SOTTO: aggiunta classe e cambio formato data #}
+                                <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                <td>{{ spesa.categoria }}<br><small>{{ spesa.descrizione }}</small></td>
+                                <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-data">Nessuna spesa trovata per Giacomo in questo periodo.</p>
+                {% endif %}
+            </div>
+
+            <div class="report-column">
+                <h2>Top Spese Erica</h2>
+                {% if spese_erica %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Categoria</th>
+                                <th style="text-align: right;">Importo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for spesa in spese_erica %}
+                            <tr>
+                                {# MODIFICHE QUI SOTTO: aggiunta classe e cambio formato data #}
+                                <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                <td>{{ spesa.categoria }}<br><small>{{ spesa.descrizione }}</small></td>
+                                <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="no-data">Nessuna spesa trovata per Erica in questo periodo.</p>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <a href="{{ url_for('statistiche') }}" class="link-torna">Torna alla selezione dei report</a>
+    </div>
+</body>
+</html>

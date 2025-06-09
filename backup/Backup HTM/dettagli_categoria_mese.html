@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titolo_pagina }} - {{ nome_mese }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { max-width: 900px; margin: auto; }
+        h1, h2 { color: #2c3e50; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 30px; box-shadow: 0 2px 3px rgba(0,0,0,0.1); }
+        th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: middle; }
+        th { background-color: #f2f2f2; font-weight: bold; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .action-form { display: inline; margin-right: 5px; }
+        .action-button-delete { background-color: #dc3545; color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9em; text-decoration: none; }
+        .action-button-delete:hover { background-color: #c82333; }
+        .action-link-edit { background-color: #ffc107; color: #212529; padding: 6px 10px; border-radius: 4px; text-decoration: none; font-size: 0.9em; display: inline-block; line-height: normal; }
+        .action-link-edit:hover { background-color: #e0a800; }
+        .link-torna { display: inline-block; margin-top: 20px; margin-bottom: 20px; color: #007bff; text-decoration: none; font-weight: bold; padding: 8px 15px; border: 1px solid #007bff; border-radius: 4px;}
+        .link-torna:hover{ background-color: #007bff; color:white;}
+        .totale-categoria-dettaglio { text-align: right; font-size: 1.1em; font-weight: bold; margin-top:5px;}
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px; }
+        .alert-success { color: #155724; background-color: #d4edda; border-color: #c3e6cb; }
+        .alert-danger { color: #721c24; background-color: #f8d7da; border-color: #f5c6cb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titolo_pagina }} <small>({{ nome_mese }})</small></h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <a href="{{ url_for('index', anno=current_anno, mese=current_mese) }}" class="link-torna">&laquo; Torna al Riepilogo Mensile</a>
+
+        {% if transazioni %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Descrizione Specifica</th>
+                        <th>Importo (€)</th>
+                        <th>Pagato da</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transazione in transazioni %}
+                    <tr>
+                        <td>{{ transazione.data }}</td>
+                        <td>{{ transazione.descrizione }}</td>
+                        <td>{{ "%.2f"|format(transazione.importo) }}</td>
+                        <td>{{ transazione.pagato_da }}</td>
+                        <td>
+                            <form class="action-form" action="{{ url_for('elimina_spesa', spesa_id=transazione.id) }}" method="post">
+                                <button type="submit" class="action-button-delete" onclick="return confirm('Sei sicuro di voler eliminare questa spesa?');">
+                                    Elimina
+                                </button>
+                            </form>
+                            <a href="{{ url_for('modifica_spesa_form', spesa_id=transazione.id) }}" class="action-link-edit">
+                                Modifica
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="2" style="text-align:right;">Totale per {{ nome_categoria }}:</th>
+                        <th>{{ "%.2f"|format(totale_categoria_mese) }}</th>
+                        <td colspan="2"></td>
+                    </tr>
+                </tfoot>
+            </table>
+        {% else %}
+            <p>Nessuna transazione di dettaglio trovata per {{ nome_categoria }} in {{ nome_mese }}.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index', anno=current_anno, mese=current_mese) }}" class="link-torna">&laquo; Torna al Riepilogo Mensile</a>
+
+    </div>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/static/service-worker.js');
+        });
+    }
+</script>
+</body>
+</html>

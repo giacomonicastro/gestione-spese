@@ -19,11 +19,13 @@ MESI_ITALIANI = {
     1: "Gennaio", 2: "Febbraio", 3: "Marzo", 4: "Aprile", 5: "Maggio", 6: "Giugno",
     7: "Luglio", 8: "Agosto", 9: "Settembre", 10: "Ottobre", 11: "Novembre", 12: "Dicembre"
 }
+# _# MODIFICA_: Aggiunto il nuovo tipo di report
 TIPI_REPORT_STATISTICHE = {
     "risparmi": "Risparmi Mensili e Andamento",
     "spese_categoria": "Dettaglio Spese per Categoria",
     "entrate_tipo": "Dettaglio Entrate per Tipo",
-    "rapporto_entrate_spese": "Rapporto Entrate/Spese"
+    "rapporto_entrate_spese": "Rapporto Entrate/Spese",
+    "top_spender": "Report Top Spender"
 }
 
 @app.template_filter('format_decimali_italiano')
@@ -135,12 +137,14 @@ def index(anno=None, mese=None):
     sommari_numerici_mese = {}
     entrate_per_tabella = []
     spese_per_tabella = []
+    # Le variabili 'ultime_spese' sono state rimosse perché non più necessarie
     db = None
     try:
         db = get_db()
         sommari_numerici_mese = calcola_sommari_mese_numerici(db, anno, mese)
         entrate_per_tabella = _get_dati_tabella_entrate(db, anno, mese)
         spese_per_tabella = _get_dati_tabella_spese(db, anno, mese)
+        # Le query per le ultime spese sono state rimosse
     except Exception as e:
         print(f"Errore nel caricamento dati per index: {e}"); flash("Errore caricamento dati.", "danger")
     finally:
@@ -289,6 +293,7 @@ def statistiche():
     nome_mese_a_str = MESI_ITALIANI.get(selected_mese_a, '')
     periodo_visualizzato_str = f"Da {nome_mese_da_str} {selected_anno_da} a {nome_mese_a_str} {selected_anno_a}"
 
+    # _# MODIFICA_: Aggiunte nuove chiavi per il report top_spender
     dati_stat = {
         "periodo_visualizzato_str": periodo_visualizzato_str,
         "messaggio_placeholder": "",
@@ -298,7 +303,9 @@ def statistiche():
         "dettaglio_entrate_tipo": [], "medie_entrate": None,
         "chart_entrate_labels": [], "chart_entrate_data_giacomo": [],
         "chart_entrate_data_erica": [], "chart_entrate_data_totale": [],
-        "forecast_report": None
+        "forecast_report": None,
+        "top_spese_totali": [], "top_spese_giacomo": [], "top_spese_erica": [],
+        "totale_entrate_periodo_str": "0 €", "totale_spese_periodo_str": "0 €"
     }
 
     if form_submitted:
@@ -441,6 +448,42 @@ def statistiche():
                     if dati_stat['forecast_report']['totale']['media_entrate'] == 0 and dati_stat['forecast_report']['totale']['media_spese'] == 0:
                         dati_stat["messaggio_placeholder"] = "Nessun dato di entrata o spesa trovato per il periodo per generare il report."
                         dati_stat['forecast_report'] = None
+                
+                # _# MODIFICA_: Logica per il nuovo report "Top Spender"
+                elif selected_report_type == 'top_spender':
+                    date_from_sql = start_date.strftime('%Y-%m-%d')
+                    date_to_sql = end_date_exclusive.strftime('%Y-%m-%d')
+
+                    totale_entrate_periodo = db.execute('SELECT SUM(importo) as totale FROM entrate WHERE data >= ? AND data < ?', (date_from_sql, date_to_sql)).fetchone()['totale'] or 0.0
+                    totale_spese_periodo = db.execute('SELECT SUM(importo) as totale FROM spese WHERE data >= ? AND data < ?', (date_from_sql, date_to_sql)).fetchone()['totale'] or 0.0
+
+                    dati_stat['totale_entrate_periodo_str'] = format_decimali_italiano(totale_entrate_periodo)
+                    dati_stat['totale_spese_periodo_str'] = format_decimali_italiano(totale_spese_periodo)
+
+                    def processa_lista_spese(lista_spese_raw):
+                        lista_elaborata = []
+                        for spesa_row in lista_spese_raw:
+                            spesa_dict = dict(spesa_row)
+                            importo = spesa_dict['importo']
+                            spesa_dict['perc_su_entrate'] = (importo / totale_entrate_periodo * 100) if totale_entrate_periodo > 0 else 0
+                            spesa_dict['perc_su_spese'] = (importo / totale_spese_periodo * 100) if totale_spese_periodo > 0 else 0
+                            lista_elaborata.append(spesa_dict)
+                        return lista_elaborata
+
+                    query_base = "SELECT data, categoria, descrizione, importo, pagato_da FROM spese WHERE data >= ? AND data < ? {extra_where} ORDER BY importo DESC LIMIT 10"
+                    
+                    cursor_totali = db.execute(query_base.format(extra_where=""), (date_from_sql, date_to_sql))
+                    dati_stat['top_spese_totali'] = processa_lista_spese(cursor_totali.fetchall())
+
+                    cursor_giacomo = db.execute(query_base.format(extra_where="AND pagato_da = ?"), (date_from_sql, date_to_sql, 'Giacomo'))
+                    dati_stat['top_spese_giacomo'] = processa_lista_spese(cursor_giacomo.fetchall())
+
+                    cursor_erica = db.execute(query_base.format(extra_where="AND pagato_da = ?"), (date_from_sql, date_to_sql, 'Erica'))
+                    dati_stat['top_spese_erica'] = processa_lista_spese(cursor_erica.fetchall())
+                    
+                    if not dati_stat['top_spese_totali']:
+                        dati_stat["messaggio_placeholder"] = "Nessuna spesa trovata nel periodo selezionato per generare il report 'Top Spender'."
+
 
         except Exception as e_stat:
             print(f"ERRORE GRAVE nel calcolo delle statistiche: {e_stat}")
@@ -612,7 +655,51 @@ def elimina_entrata(entrata_id):
     finally:
         if db: db.close()
     return redirect(url_for('index', anno=anno_redirect, mese=mese_redirect))
+@app.route('/registro/<int:anno>/<int:mese>')
+def registro_mese(anno, mese):
+    db = get_db()
+    
+    try:
+        data_corrente_dt = datetime(anno, mese, 1)
+    except ValueError:
+        flash("Data non valida, mostro il mese corrente.", "warning")
+        oggi = datetime.today()
+        anno, mese = oggi.year, oggi.month
+        data_corrente_dt = datetime(anno, mese, 1)
 
+    nome_mese_corrente = f"{MESI_ITALIANI.get(data_corrente_dt.month, '')} {data_corrente_dt.year}"
+    mese_precedente_dt = data_corrente_dt - timedelta(days=1)
+    anno_prec, mese_prec = mese_precedente_dt.year, mese_precedente_dt.month
+    if data_corrente_dt.month == 12:
+        primo_giorno_mese_successivo_dt = datetime(data_corrente_dt.year + 1, 1, 1)
+    else:
+        primo_giorno_mese_successivo_dt = datetime(data_corrente_dt.year, data_corrente_dt.month + 1, 1)
+    anno_succ, mese_succ = primo_giorno_mese_successivo_dt.year, primo_giorno_mese_successivo_dt.month
+
+    anno_mese_str = f"{anno:04d}-{mese:02d}"
+    
+    spese_giacomo = db.execute(
+        'SELECT data, categoria, descrizione, importo FROM spese WHERE strftime("%Y-%m", data) = ? AND pagato_da = ? ORDER BY data DESC, id DESC',
+        (anno_mese_str, 'Giacomo')
+    ).fetchall()
+    
+    spese_erica = db.execute(
+        'SELECT data, categoria, descrizione, importo FROM spese WHERE strftime("%Y-%m", data) = ? AND pagato_da = ? ORDER BY data DESC, id DESC',
+        (anno_mese_str, 'Erica')
+    ).fetchall()
+    
+    db.close()
+    
+    return render_template('registro_mese.html',
+                           titolo_pagina=f"Registro Spese - {nome_mese_corrente}",
+                           nome_mese_corrente=nome_mese_corrente,
+                           spese_giacomo=spese_giacomo,
+                           spese_erica=spese_erica,
+                           anno_prec=anno_prec, mese_prec=mese_prec,
+                           anno_succ=anno_succ, mese_succ=mese_succ,
+                           # --- CORREZIONE QUI ---
+                           current_anno=anno,
+                           current_mese=mese)
 if __name__ == '__main__':
     print("Avvio applicazione...")
     # init_db()

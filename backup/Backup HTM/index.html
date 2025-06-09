@@ -8,19 +8,44 @@
     <style>
         body { font-family: sans-serif; margin: 20px; color: #333; }
         .container { max-width: 900px; margin: auto; }
-        h2, h3, h4 { color: #2c3e50; }
-        .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
-        .header-container h1 { color: #2c3e50; margin: 0; }
-        /* Contenitore per i bottoni di navigazione */
-        .header-nav-buttons { display: flex; gap: 10px; }
-        .bottone-navigazione { display: inline-block; padding: 8px 15px; background-color: #007bff; color: white !important; text-align: center; text-decoration: none; border-radius: 4px; font-weight: bold; transition: background-color 0.2s ease-in-out; }
-        .bottone-navigazione:hover { background-color: #0056b3; text-decoration: none; }
-        .bottone-navigazione.secondary { background-color: #6c757d; } /* Stile per il secondo bottone */
-        .bottone-navigazione.secondary:hover { background-color: #5a6268; }
+        /* h1, h2, h3 { color: #2c3e50; } -- h1 ora è nel .header-container */
+        h2, h3 { color: #2c3e50; }
+
+        /* NUOVA Intestazione con Titolo e Pulsante Navigazione */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .header-container h1 {
+            color: #2c3e50;
+            margin: 0; /* Rimuove margini default di h1 */
+        }
+        .bottone-navigazione {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white !important; /* !important per sovrascrivere altri stili di link se necessario */
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.2s ease-in-out;
+        }
+        .bottone-navigazione:hover {
+            background-color: #0056b3;
+            text-decoration: none;
+        }
+        /* Fine Nuova Intestazione */
+
         .navigazione-mesi { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 12px 15px; background-color: #e9ecef; border-radius: 5px; border: 1px solid #dee2e6; }
         .navigazione-mesi a { text-decoration: none; color: #007bff; font-weight: bold; padding: 8px 15px; border-radius: 4px; background-color: #fff; border: 1px solid #007bff; transition: all 0.2s ease-in-out; }
         .navigazione-mesi a:hover { background-color: #007bff; color: white; }
         .navigazione-mesi h3 { margin: 0; font-size: 1.5em; color: #495057; }
+
         .riquadri-sommario { display: flex; flex-wrap: wrap; justify-content: space-around; margin-bottom: 30px; text-align: center; gap: 15px; }
         .riquadri-sommario > div { padding: 15px; border: 1px solid transparent; border-radius: 8px; flex-basis: calc(33.333% - 10px); min-width: 220px; box-shadow: 0 2px 5px rgba(0,0,0,0.07); box-sizing: border-box;}
         .riquadri-sommario h4 { margin-top: 0; margin-bottom: 10px; font-size: 1.1em; color: #495057;}
@@ -28,12 +53,14 @@
         .riquadri-sommario span.totale-persona-valore { font-size: 1.3em; font-weight: bold; margin-top: 8px;}
         .riquadri-sommario hr { border: 0; border-top: 1px solid rgba(0,0,0,0.1); margin: 10px 0; }
         .riquadri-sommario .totale-complessivo p {font-size: 1.4em; font-weight: bold; margin-top:10px;}
+        
         .entrate-sommario { background-color: #e6ffed; border-color: #b3e6b3;}
         .entrate-sommario span.totale-persona-valore, .entrate-sommario .totale-complessivo p { color: #28a745; }
         .spese-sommario { background-color: #ffe6e6; border-color: #ffb3b3;}
         .spese-sommario span.totale-persona-valore, .spese-sommario .totale-complessivo p { color: #dc3545; }
         .risparmio-sommario { background-color: #e6f7ff; border-color: #b3d7ff;}
         .risparmio-sommario span.totale-persona-valore, .risparmio-sommario .totale-complessivo p { color: #007bff; }
+
         table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
         th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: middle; }
         th { background-color: #f8f9fa; font-weight: 600; color: #495057; }
@@ -41,12 +68,14 @@
         td a { color: #007bff; text-decoration: none; font-weight: 500; }
         td a:hover { text-decoration: underline; color: #0056b3; }
         tfoot th, tfoot td { font-weight: bold; background-color: #e9ecef; }
+
         .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: .25rem; }
         .alert-success { color: #0f5132; background-color: #d1e7dd; border-color: #badbcc; }
         .alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
         .alert-warning { color: #664d03; background-color: #fff3cd; border-color: #ffecb5; }
         .alert-info { color: #055160; background-color: #cff4fc; border-color: #b6effb; }
-        form.form-aggiungi-transazione { border: 1px solid #ced4da; padding: 25px; border-radius: 5px; background-color: #f8f9fa; margin-top: 30px; margin-bottom: 30px; }
+
+        form.form-aggiungi-transazione { border: 1px solid #ced4da; padding: 25px; border-radius: 5px; background-color: #f8f9fa; margin-bottom: 30px; }
         form.form-aggiungi-transazione h2 { margin-top: 0; margin-bottom: 20px; }
         form.form-aggiungi-transazione div { margin-bottom: 18px; }
         form.form-aggiungi-transazione label { display: block; margin-bottom: 6px; font-weight: 500; color: #495057; }
@@ -70,10 +99,7 @@
     <div class="container">
         <div class="header-container">
             <h1>{{ titolo }}</h1>
-            <div class="header-nav-buttons">
-                <a href="{{ url_for('registro_mese', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione secondary">Registro Spese</a>
-                <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
-            </div>
+            <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
         </div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -114,27 +140,15 @@
             </div>
         </div>
 
-        <form id="formAggiungiTransazione" class="form-aggiungi-transazione" action="{{ url_for('aggiungi_transazione') }}" method="post">
-            <h2>Aggiungi Nuova Transazione</h2>
-            <div id="messaggioFormTransazione" class="messaggio-feedback" style="display:none;"></div>
-            <div> <label>Tipo Transazione:</label> <input type="radio" name="tipo_transazione" value="spesa" id="tipo_spesa" checked onchange="aggiornaCampiForm()"> <label for="tipo_spesa">Spesa</label> <input type="radio" name="tipo_transazione" value="entrata" id="tipo_entrata" onchange="aggiornaCampiForm()"> <label for="tipo_entrata">Entrata</label> </div>
-            <div> <label for="data">Data:</label> <input type="date" id="data" name="data" value="{{ datetime.today().strftime('%Y-%m-%d') }}" required> </div>
-            <div> <label for="importo">Importo:</label> <input type="number" id="importo" name="importo" step="0.01" placeholder="Es. 55.70" required> </div>
-            <div id="campi_spesa"> <div> <label for="categoria_spesa_select">Categoria Spesa:</label> <select id="categoria_spesa_select" name="categoria_spesa_select" required> <option value="" disabled selected>Seleziona una categoria...</option> {% for categoria_opt in categorie_spesa_disponibili %} <option value="{{ categoria_opt }}">{{ categoria_opt }}</option> {% endfor %} </select> </div> <div> <label for="descrizione_spesa">Descrizione Spesa (Opzionale):</label> <input type="text" id="descrizione_spesa" name="descrizione_spesa" placeholder="Dettaglio aggiuntivo (es. Supermercato specific)"> </div> <div> <label for="pagato_da">Pagato da (Spesa):</label> <select id="pagato_da" name="pagato_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
-            <div id="campi_entrata" style="display:none;"> <div> <label for="tipo_entrata_val">Tipo Entrata:</label> <select id="tipo_entrata_val" name="tipo_entrata_val" required> <option value="Stipendio">Stipendio</option> <option value="Bonus">Bonus</option> <option value="Regalo">Regalo</option> <option value="Vendita">Vendita</option> <option value="Extra">Entrata Extra</option> <option value="Altro">Altro</option> </select> </div> <div> <label for="descrizione_entrata">Descrizione/Motivazione Entrata (Opzionale):</label> <input type="text" id="descrizione_entrata" name="descrizione_entrata" placeholder="Es. Stipendio mese, Vendita oggetto X"> </div> <div> <label for="ricevuto_da">Ricevuto da (Entrata):</label> <select id="ricevuto_da" name="ricevuto_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
-            <div> <button type="submit">Aggiungi Transazione</button> </div>
-        </form>
-        <hr>
-
         {% if entrate_mese_dettagliate is defined %}
             <h2>Riepilogo Entrate</h2>
             <table id="tabella-entrate">
                 <thead>
                     <tr>
                         <th>Tipo Entrata</th>
-                        <th>Giacomo</th>
-                        <th>Erica</th>
-                        <th>Totale Tipo</th>
+                        <th>Giacomo (€)</th>
+                        <th>Erica (€)</th>
+                        <th>Totale Tipo (€)</th>
                         <th>Dettagli</th>
                     </tr>
                 </thead>
@@ -142,9 +156,9 @@
                     {% for entrata_agg in entrate_mese_dettagliate %}
                     <tr>
                         <td>{{ entrata_agg['tipo_entrata'] }}</td>
-                        <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                        <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=False) }}</strong></td>
                         <td>
                             <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
                                 Vedi Dettagli
@@ -158,9 +172,9 @@
                 <tfoot id="tfoot-entrate">
                     <tr>
                         <th style="text-align:right;">Totale Complessivo:</th>
-                        <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                        <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=False) }}</th>
                         <td></td>
                     </tr>
                 </tfoot>
@@ -173,9 +187,9 @@
                 <thead>
                     <tr>
                         <th>Categoria Spesa</th>
-                        <th>Giacomo</th>
-                        <th>Erica</th>
-                        <th>Totale Categoria</th>
+                        <th>Giacomo (€)</th>
+                        <th>Erica (€)</th>
+                        <th>Totale Categoria (€)</th>
                         <th>Dettagli Spese</th>
                     </tr>
                 </thead>
@@ -183,9 +197,9 @@
                     {% for spesa_agg in spese_mese_dettagliate %}
                     <tr>
                         <td>{{ spesa_agg['categoria'] }}</td>
-                        <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                        <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=False) }}</td>
+                        <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=False) }}</strong></td>
                         <td>
                             <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg['categoria']) }}">
                                 Vedi Dettagli
@@ -199,18 +213,29 @@
                 <tfoot id="tfoot-spese">
                     <tr>
                         <th style="text-align:right;">Totale Complessivo:</th>
-                        <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                        <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=False) }}</th>
+                        <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=False) }}</th>
                         <td></td>
                     </tr>
                 </tfoot>
             </table>
         {% endif %}
+
+        <hr>
+        <form id="formAggiungiTransazione" class="form-aggiungi-transazione" action="{{ url_for('aggiungi_transazione') }}" method="post">
+            <h2>Aggiungi Nuova Transazione</h2>
+            <div id="messaggioFormTransazione" class="messaggio-feedback" style="display:none;"></div>
+            <div> <label>Tipo Transazione:</label> <input type="radio" name="tipo_transazione" value="spesa" id="tipo_spesa" checked onchange="aggiornaCampiForm()"> <label for="tipo_spesa">Spesa</label> <input type="radio" name="tipo_transazione" value="entrata" id="tipo_entrata" onchange="aggiornaCampiForm()"> <label for="tipo_entrata">Entrata</label> </div>
+            <div> <label for="data">Data:</label> <input type="date" id="data" name="data" value="{{ datetime.today().strftime('%Y-%m-%d') }}" required> </div>
+            <div> <label for="importo">Importo (€):</label> <input type="number" id="importo" name="importo" step="0.01" placeholder="Es. 55.70" required> </div>
+            <div id="campi_spesa"> <div> <label for="categoria_spesa_select">Categoria Spesa:</label> <select id="categoria_spesa_select" name="categoria_spesa_select" required> <option value="" disabled selected>Seleziona una categoria...</option> {% for categoria_opt in categorie_spesa_disponibili %} <option value="{{ categoria_opt }}">{{ categoria_opt }}</option> {% endfor %} </select> </div> <div> <label for="descrizione_spesa">Descrizione Spesa (Opzionale):</label> <input type="text" id="descrizione_spesa" name="descrizione_spesa" placeholder="Dettaglio aggiuntivo (es. Supermercato specific)"> </div> <div> <label for="pagato_da">Pagato da (Spesa):</label> <select id="pagato_da" name="pagato_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
+            <div id="campi_entrata" style="display:none;"> <div> <label for="tipo_entrata_val">Tipo Entrata:</label> <select id="tipo_entrata_val" name="tipo_entrata_val" required> <option value="Stipendio">Stipendio</option> <option value="Bonus">Bonus</option> <option value="Regalo">Regalo</option> <option value="Vendita">Vendita</option> <option value="Extra">Entrata Extra</option> <option value="Altro">Altro</option> </select> </div> <div> <label for="descrizione_entrata">Descrizione/Motivazione Entrata (Opzionale):</label> <input type="text" id="descrizione_entrata" name="descrizione_entrata" placeholder="Es. Stipendio mese, Vendita oggetto X"> </div> <div> <label for="ricevuto_da">Ricevuto da (Entrata):</label> <select id="ricevuto_da" name="ricevuto_da" required> <option value="Giacomo">Giacomo</option> <option value="Erica">Erica</option> </select> </div> </div>
+            <div> <button type="submit">Aggiungi Transazione</button> </div>
+        </form>
         
         <script>
-        // Il blocco script rimane invariato
-        function aggiornaCampiForm() {
+        function aggiornaCampiForm() { /* ... invariata ... */ 
             var tipoSpesa = document.getElementById('tipo_spesa').checked;
             var campiSpesaDiv = document.getElementById('campi_spesa');
             var campiEntrataDiv = document.getElementById('campi_entrata');
@@ -224,13 +249,14 @@
             document.getElementById('ricevuto_da').required = !tipoSpesa;
         }
 
-        function aggiornaElemento(id, valoreFormattato, prefisso = "") {
+        function aggiornaElemento(id, valoreFormattato, prefisso = "") { /* ... invariata ... */
             const elemento = document.getElementById(id);
             if (elemento) {
-                let testoFinale = prefisso + valoreFormattato;
+                let testoFinale = prefisso + valoreFormattato; 
+                // console.log(`AGGIORNAMENTO JS (riquadro/tfoot cell): ID '${id}' impostato a: '${testoFinale}'`);
                 elemento.textContent = testoFinale;
             } else {
-                console.error(`ERRORE JS: Elemento con ID '${id}' NON TROVATO!`);
+                console.error(`ERRORE JS: Elemento per riquadro/tfoot cell con ID '${id}' NON TROVATO!`);
             }
         }
         
@@ -250,7 +276,7 @@
 
                     fetch(actionUrl, { method: 'POST', body: formData })
                     .then(response => {
-                        if (!response.ok) { throw new Error('Network response was not ok: ' + response.statusText); }
+                        if (!response.ok) { /* ... gestione errore invariata ... */ }
                         return response.json();
                     })
                     .then(data => {
@@ -263,6 +289,7 @@
                             aggiornaCampiForm();
                             
                             if (data.sommario_aggiornato) {
+                                // Aggiorna Riquadri Sommario
                                 aggiornaElemento('summary-entrate-giacomo', data.sommario_aggiornato.entrate_giacomo_str);
                                 aggiornaElemento('summary-entrate-erica', data.sommario_aggiornato.entrate_erica_str);
                                 aggiornaElemento('summary-entrate-totale', data.sommario_aggiornato.totale_entrate_str, "Totale: ");
@@ -274,31 +301,30 @@
                                 aggiornaElemento('summary-risparmio-totale', data.sommario_aggiornato.totale_risparmio_str, "Totale: ");
                             }
 
+                            // Aggiorna Tabella Entrate
                             if (data.html_tbody_entrate !== undefined && data.html_tfoot_entrate !== undefined) {
                                 const tbodyEntrate = document.getElementById('tbody-entrate');
                                 const tfootEntrate = document.getElementById('tfoot-entrate');
                                 if (tbodyEntrate) { tbodyEntrate.innerHTML = data.html_tbody_entrate; }
                                 if (tfootEntrate) { tfootEntrate.innerHTML = data.html_tfoot_entrate; }
-                            }
+                                console.log("Tabella entrate (tbody e tfoot) aggiornata.");
+                            } else { console.warn("Dati HTML per tabella entrate mancanti nel JSON.");}
 
+                            // Aggiorna Tabella Spese
                             if (data.html_tbody_spese !== undefined && data.html_tfoot_spese !== undefined) {
                                 const tbodySpese = document.getElementById('tbody-spese');
                                 const tfootSpese = document.getElementById('tfoot-spese');
                                 if (tbodySpese) { tbodySpese.innerHTML = data.html_tbody_spese; }
                                 if (tfootSpese) { tfootSpese.innerHTML = data.html_tfoot_spese; }
-                            }
+                                console.log("Tabella spese (tbody e tfoot) aggiornata.");
+                            } else { console.warn("Dati HTML per tabella spese mancanti nel JSON.");}
 
                         } else { 
                             divMessaggioForm.className = 'messaggio-feedback messaggio-errore';
                         }
                         divMessaggioForm.style.display = 'block';
                     })
-                    .catch(error => {
-                        console.error('Fetch Error:', error);
-                        divMessaggioForm.textContent = 'Errore di comunicazione con il server.';
-                        divMessaggioForm.className = 'messaggio-feedback messaggio-errore';
-                        divMessaggioForm.style.display = 'block';
-                     })
+                    .catch(error => { /* ... gestione errore fetch invariata ... */ })
                     .finally(() => {
                         if(submitButton) { submitButton.disabled = false; submitButton.textContent = 'Aggiungi Transazione';}
                     });

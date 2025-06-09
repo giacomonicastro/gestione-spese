@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="manifest" href="/static/manifest.json">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titolo_pagina }}</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; background-color: #f9f9f9;}
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 20px;}
+        form div { margin-bottom: 15px; }
+        form label { display: block; margin-bottom: 5px; font-weight: bold; }
+        form input[type="text"],
+        form input[type="number"],
+        form input[type="date"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        form input:focus, form select:focus { border-color: #80bdff; outline: 0; box-shadow: 0 0 0 .2rem rgba(0,123,255,.25); }
+        form button[type="submit"] {
+            background-color: #28a745; color: white; padding: 10px 15px;
+            border: none; border-radius: 4px; cursor: pointer; font-size: 1em; display: block; width: 100%;
+        }
+        form button[type="submit"]:hover { background-color: #218838; }
+        .link-annulla { display: block; text-align: center; margin-top: 15px; color: #007bff; text-decoration: none; }
+        .link-annulla:hover { text-decoration: underline; }
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: .25rem; }
+        .alert-danger { color: #842029; background-color: #f8d7da; border-color: #f5c2c7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>{{ titolo_pagina }}</h1>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category if category else 'info' }}" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% if spesa %}
+        <form action="{{ url_for('processa_modifica_spesa', spesa_id=spesa.id) }}" method="post">
+            <div>
+                <label for="data">Data:</label>
+                <input type="date" id="data" name="data" value="{{ spesa.data }}" required>
+            </div>
+            <div> <label for="categoria_spesa_select">Categoria Spesa:</label>
+                <select id="categoria_spesa_select" name="categoria_spesa_select" required>
+                    <option value="" disabled>Seleziona una categoria...</option>
+                    {% for categoria_opt in categorie_spesa_disponibili %}
+                        <option value="{{ categoria_opt }}" {% if spesa.categoria == categoria_opt %}selected{% endif %}>{{ categoria_opt }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="descrizione_spesa">Descrizione Spesa (Opzionale):</label>
+                <input type="text" id="descrizione_spesa" name="descrizione_spesa" value="{{ spesa.descrizione if spesa.descrizione is not none else '' }}" placeholder="Dettaglio aggiuntivo">
+            </div>
+            <div>
+                <label for="importo">Importo (€):</label>
+                <input type="number" id="importo" name="importo" step="0.01" value="{{ spesa.importo|format_decimali_italiano }}" required>
+            </div>
+            <div>
+                <label for="pagato_da">Pagato da (Spesa):</label>
+                <select id="pagato_da" name="pagato_da" required>
+                    <option value="Giacomo" {% if spesa.pagato_da == 'Giacomo' %}selected{% endif %}>Giacomo</option>
+                    <option value="Erica" {% if spesa.pagato_da == 'Erica' %}selected{% endif %}>Erica</option>
+                </select>
+            </div>
+            <div>
+                <button type="submit">Salva Modifiche</button>
+            </div>
+        </form>
+        {% else %}
+        <p>Spesa non trovata o errore nel caricamento.</p>
+        {% endif %}
+        
+        {% set anno_spesa = spesa.data.split('-')[0]|int if spesa else datetime.today().year %}
+        {% set mese_spesa = spesa.data.split('-')[1]|int if spesa else datetime.today().month %}
+        <a href="{{ url_for('index', anno=anno_spesa, mese=mese_spesa) }}" class="link-annulla">Annulla e Torna al Riepilogo Mensile</a>
+    </div>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/static/service-worker.js');
+        });
+    }
+</script>
+</body>
+</html>

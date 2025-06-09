@@ -1,9 +1,9 @@
 {% for entrata_agg in entrate_mese_dettagliate %}
 <tr>
     <td>{{ entrata_agg['tipo_entrata'] }}</td>
-    <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-    <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-    <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
+    <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=False) }}</td>
+    <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=False) }}</td>
+    <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=False) }}</strong></td>
     <td>
         <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
             Vedi Dettagli
