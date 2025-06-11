@@ -700,6 +700,128 @@ def registro_mese(anno, mese):
                            # --- CORREZIONE QUI ---
                            current_anno=anno,
                            current_mese=mese)
+
+@app.route('/delta')
+@app.route('/delta/<int:anno>')
+def delta_annuale(anno=None):
+    oggi = datetime.today()
+    if anno is None:
+        anno = oggi.year
+
+    # --- 1. Preparazione Date ---
+    anno_corrente = anno
+    anno_precedente = anno - 1
+
+    giorno_fine_confronto, mese_fine_confronto = (31, 12)
+    # Usa la data odierna per il confronto solo se l'anno selezionato è quello attuale
+    if anno_corrente == oggi.year:
+        giorno_fine_confronto = oggi.day
+        mese_fine_confronto = oggi.month
+        
+    start_date_curr = f"{anno_corrente:04d}-01-01"
+    end_date_curr = f"{anno_corrente:04d}-{mese_fine_confronto:02d}-{giorno_fine_confronto:02d}"
+    start_date_prev = f"{anno_precedente:04d}-01-01"
+    end_date_prev = f"{anno_precedente:04d}-{mese_fine_confronto:02d}-{giorno_fine_confronto:02d}"
+
+    db = get_db()
+
+    # --- Funzioni di Utilità ---
+    def calculate_delta(current, previous):
+        delta_abs = current - previous
+        delta_perc = (delta_abs / previous * 100) if previous != 0 else 0
+        return {'abs': delta_abs, 'perc': delta_perc}
+
+    # --- Tab 1 & 2: Dati per Riepilogo Categorie/Tipi (Periodo vs Periodo) ---
+    def get_summary_data(tabella, colonna_cat, colonna_persona):
+        # ... la logica di questa funzione è complessa e nidificata, la manteniamo come prima ...
+        # (omessa per brevità, è la stessa del nostro penultimo scambio)
+        query = f"""
+            SELECT CASE WHEN data BETWEEN ? AND ? THEN 'current' ELSE 'previous' END as periodo, {colonna_cat} as categoria, {colonna_persona} as persona, SUM(importo) as totale
+            FROM {tabella} WHERE (data BETWEEN ? AND ?) OR (data BETWEEN ? AND ?) GROUP BY periodo, categoria, persona """
+        cursor = db.execute(query, (start_date_curr, end_date_curr, start_date_curr, end_date_curr, start_date_prev, end_date_prev))
+        data_dict = {}
+        for row in cursor.fetchall():
+            cat, persona, periodo, totale = row['categoria'], row['persona'], row['periodo'], row['totale']
+            if cat not in data_dict:
+                data_dict[cat] = {'previous': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'current': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'delta': {'Giacomo': {}, 'Erica': {}, 'Totale': {}}}
+            data_dict[cat][periodo][persona] = totale or 0.0
+            data_dict[cat][periodo]['Totale'] += totale or 0.0
+        for cat, data in data_dict.items():
+            for p in ['Giacomo', 'Erica', 'Totale']:
+                data['delta'][p] = calculate_delta(data['current'][p], data['previous'][p])
+        return data_dict
+
+    spese_per_categoria = get_summary_data('spese', 'categoria', 'pagato_da')
+    entrate_per_tipo = get_summary_data('entrate', 'tipo_entrata', 'ricevuto_da')
+
+    # --- Tab 3 & 4: Dati per Dettaglio Mensile (Mese vs Mese) ---
+    def get_monthly_breakdown(tabella, colonna_persona):
+        query = f"""
+            SELECT strftime('%Y', data) as anno, strftime('%m', data) as mese, {colonna_persona} as persona, SUM(importo) as totale
+            FROM {tabella} WHERE (data BETWEEN ? AND ?) OR (data BETWEEN ? AND ?) GROUP BY anno, mese, persona """
+        cursor = db.execute(query, (start_date_curr, end_date_curr, start_date_prev, end_date_prev))
+        
+        # Struttura per contenere i dati mese per mese
+        dati_mensili = {i: {'mese_nome': MESI_ITALIANI[i], 'previous': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'current': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'delta': {'Giacomo': {}, 'Erica': {}, 'Totale': {}}} for i in range(1, 13)}
+        
+        for row in cursor.fetchall():
+            anno, mese_num, persona, totale = int(row['anno']), int(row['mese']), row['persona'], row['totale'] or 0.0
+            periodo = 'current' if anno == anno_corrente else 'previous'
+            dati_mensili[mese_num][periodo][persona] = totale
+            dati_mensili[mese_num][periodo]['Totale'] += totale
+        
+        # Calcola i delta per ogni mese e prepara la lista finale
+        lista_finale = []
+        for i in range(1, mese_fine_confronto + 1):
+            mese_data = dati_mensili[i]
+            for p in ['Giacomo', 'Erica', 'Totale']:
+                mese_data['delta'][p] = calculate_delta(mese_data['current'][p], mese_data['previous'][p])
+            lista_finale.append(mese_data)
+
+        # Calcola medie e delta delle medie
+        medie = {'previous': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'current': {'Giacomo': 0.0, 'Erica': 0.0, 'Totale': 0.0}, 'delta': {}}
+        num_mesi_periodo = len(lista_finale)
+        if num_mesi_periodo > 0:
+            for p in ['Giacomo', 'Erica', 'Totale']:
+                medie['previous'][p] = sum(m['previous'][p] for m in lista_finale) / num_mesi_periodo
+                medie['current'][p] = sum(m['current'][p] for m in lista_finale) / num_mesi_periodo
+                medie['delta'][p] = calculate_delta(medie['current'][p], medie['previous'][p])
+
+        return lista_finale, medie
+
+    spese_mensili, medie_spese = get_monthly_breakdown('spese', 'pagato_da')
+    entrate_mensili, medie_entrate = get_monthly_breakdown('entrate', 'ricevuto_da')
+
+    # --- Riepilogo generale per i box in alto (calcolato sui dati aggregati) ---
+    riepilogo = {p: {'entrate': {}, 'spese': {}, 'risparmio': {}} for p in ['Giacomo', 'Erica', 'Totale']}
+    for p in ['Giacomo', 'Erica', 'Totale']:
+        entrate_curr = sum(d['current'][p] for d in entrate_per_tipo.values())
+        entrate_prev = sum(d['previous'][p] for d in entrate_per_tipo.values())
+        spese_curr = sum(d['current'][p] for d in spese_per_categoria.values())
+        spese_prev = sum(d['previous'][p] for d in spese_per_categoria.values())
+        riepilogo[p]['entrate'] = {'current': entrate_curr, 'delta': calculate_delta(entrate_curr, entrate_prev)}
+        riepilogo[p]['spese'] = {'current': spese_curr, 'delta': calculate_delta(spese_curr, spese_prev)}
+        riepilogo[p]['risparmio'] = {'current': entrate_curr - spese_curr, 'delta': calculate_delta(entrate_curr - spese_curr, entrate_prev - spese_prev)}
+    
+    # --- Dati finali per il template ---
+    cursor_anni = db.execute("SELECT DISTINCT STRFTIME('%Y', data) as anno FROM spese UNION SELECT DISTINCT STRFTIME('%Y', data) as anno FROM entrate ORDER BY anno DESC")
+    anni_disponibili = [row['anno'] for row in cursor_anni.fetchall()]
+    db.close()
+    
+    return render_template('delta_annuale.html',
+                           titolo_pagina=f"Confronto Annuale {anno_corrente}",
+                           riepilogo=riepilogo,
+                           spese_per_categoria=spese_per_categoria,
+                           entrate_per_tipo=entrate_per_tipo,
+                           spese_mensili=spese_mensili,
+                           entrate_mensili=entrate_mensili,
+                           medie_spese=medie_spese,
+                           medie_entrate=medie_entrate,
+                           anno_corrente=anno_corrente,
+                           anno_precedente=anno_precedente,
+                           anni_disponibili=anni_disponibili,
+                           periodo_str=f"fino al {giorno_fine_confronto} {MESI_ITALIANI[mese_fine_confronto]}")
+
 if __name__ == '__main__':
     print("Avvio applicazione...")
     # init_db()

@@ -69,12 +69,14 @@
 <body>
     <div class="container">
         <div class="header-container">
-            <h1>{{ titolo }}</h1>
-            <div class="header-nav-buttons">
-                <a href="{{ url_for('registro_mese', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione secondary">Registro Spese</a>
-                <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
-            </div>
-        </div>
+    <h1>{{ titolo }}</h1>
+    <div class="header-nav-buttons">
+        <a href="{{ url_for('delta_annuale') }}" class="bottone-navigazione secondary">Confronto Annuale</a>
+        
+        <a href="{{ url_for('registro_mese', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione secondary">Registro Spese</a>
+        <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
+    </div>
+</div>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
