@@ -65,6 +65,34 @@
             .sub-grid { grid-template-columns: 1fr; }
         }
     </style>
+    <style>
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0 5px;
+            }
+            .form-selezione-periodo {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .grafici-container,
+            .forecast-container,
+            .sub-grid {
+                grid-template-columns: 1fr;
+            }
+            .report-column-principale {
+                width: 100%;
+                padding: 10px;
+            }
+            .table-responsive-wrapper {
+                overflow-x: auto;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -116,29 +144,31 @@
                     {% if current_selected_report_type == 'risparmi' %}
                         {% if dati_stat.lista_risparmi_mensili %}
                            <h4>Risparmi Mensili</h4>
-                            <table class="statistiche-tabella">
-                                <thead><tr><th>Periodo</th><th>Risparmio Giacomo</th><th>Risparmio Erica</th><th>Risparmio Totale</th></tr></thead>
-                                <tbody>
-                                    {% for item in dati_stat.lista_risparmi_mensili %}
-                                    <tr>
-                                        <td>{{ item.periodo }}</td>
-                                        <td>{{ item.risparmio_giacomo|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td>{{ item.risparmio_erica|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td><strong>{{ item.risparmio_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                                {% if dati_stat.medie_risparmi %}
-                                <tfoot>
-                                    <tr>
-                                        <td><strong>Media Mensile</strong></td>
-                                        <td><strong>{{ dati_stat.medie_risparmi.giacomo|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                        <td><strong>{{ dati_stat.medie_risparmi.erica|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                        <td><strong>{{ dati_stat.medie_risparmi.totale|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                    </tr>
-                                </tfoot>
-                                {% endif %}
-                            </table>
+                            <div class="table-responsive-wrapper">
+                                <table class="statistiche-tabella">
+                                    <thead><tr><th>Periodo</th><th>Risparmio Giacomo</th><th>Risparmio Erica</th><th>Risparmio Totale</th></tr></thead>
+                                    <tbody>
+                                        {% for item in dati_stat.lista_risparmi_mensili %}
+                                        <tr>
+                                            <td>{{ item.periodo }}</td>
+                                            <td>{{ item.risparmio_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td>{{ item.risparmio_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td><strong>{{ item.risparmio_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    {% if dati_stat.medie_risparmi %}
+                                    <tfoot>
+                                        <tr>
+                                            <td><strong>Media Mensile</strong></td>
+                                            <td><strong>{{ dati_stat.medie_risparmi.giacomo|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                            <td><strong>{{ dati_stat.medie_risparmi.erica|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                            <td><strong>{{ dati_stat.medie_risparmi.totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                    {% endif %}
+                                </table>
+                            </div>
                             <h4>Andamento Risparmi</h4>
                             <canvas id="graficoAndamentoRisparmi"></canvas>
                             <script>
@@ -154,20 +184,22 @@
                     {% elif current_selected_report_type == 'spese_categoria' %}
                         {% if dati_stat.dettaglio_spese_categoria %}
                             <h4>Dettaglio Spese per Categoria</h4>
-                            <table class="statistiche-tabella">
-                                <thead><tr><th>Categoria</th><th>Spesa Giacomo</th><th>Spesa Erica</th><th>Spesa Totale</th><th>Media Mensile Cat.</th></tr></thead>
-                                <tbody>
-                                    {% for item in dati_stat.dettaglio_spese_categoria %}
-                                    <tr>
-                                        <td>{{ item.categoria }}</td>
-                                        <td>{{ item.spesa_giacomo|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td>{{ item.spesa_erica|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td><strong>{{ item.spesa_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                        <td><em>{{ item.media_mensile|format_decimali_italiano(con_euro=True) }}</em></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive-wrapper">
+                                <table class="statistiche-tabella">
+                                    <thead><tr><th>Categoria</th><th>Spesa Giacomo</th><th>Spesa Erica</th><th>Spesa Totale</th><th>Media Mensile Cat.</th></tr></thead>
+                                    <tbody>
+                                        {% for item in dati_stat.dettaglio_spese_categoria %}
+                                        <tr>
+                                            <td>{{ item.categoria }}</td>
+                                            <td>{{ item.spesa_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td>{{ item.spesa_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td><strong>{{ item.spesa_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                            <td><em>{{ item.media_mensile|format_decimali_italiano(con_euro=True) }}</em></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                             <h4>Distribuzione Spese</h4>
                             <div class="grafici-container">
                                 {% if dati_stat.chart_spese_giacomo and dati_stat.chart_spese_giacomo.data and dati_stat.chart_spese_giacomo.data|length > 0 %}<div class="grafico-item"><h5>Spese Giacomo</h5><canvas id="graficoSpeseGiacomo"></canvas></div>{% endif %}
@@ -184,19 +216,21 @@
                     {% elif current_selected_report_type == 'entrate_tipo' %}
                         {% if dati_stat.dettaglio_entrate_tipo %}
                             <h4>Dettaglio Entrate per Tipo</h4>
-                            <table class="statistiche-tabella">
-                                <thead><tr><th>Tipo Entrata</th><th>Entrate Giacomo</th><th>Entrate Erica</th><th>Entrate Totali</th></tr></thead>
-                                <tbody>
-                                    {% for item in dati_stat.dettaglio_entrate_tipo %}
-                                    <tr>
-                                        <td>{{ item.tipo }}</td>
-                                        <td>{{ item.entrata_giacomo|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td>{{ item.entrata_erica|format_decimali_italiano(con_euro=True) }}</td>
-                                        <td><strong>{{ item.entrata_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <div class="table-responsive-wrapper">
+                                <table class="statistiche-tabella">
+                                    <thead><tr><th>Tipo Entrata</th><th>Entrate Giacomo</th><th>Entrate Erica</th><th>Entrate Totali</th></tr></thead>
+                                    <tbody>
+                                        {% for item in dati_stat.dettaglio_entrate_tipo %}
+                                        <tr>
+                                            <td>{{ item.tipo }}</td>
+                                            <td>{{ item.entrata_giacomo|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td>{{ item.entrata_erica|format_decimali_italiano(con_euro=True) }}</td>
+                                            <td><strong>{{ item.entrata_totale|format_decimali_italiano(con_euro=True) }}</strong></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                             {% if dati_stat.medie_entrate %}
                             <h4>Medie Mensili Entrate</h4>
                             <ul class="lista-medie">
@@ -244,29 +278,31 @@
                             <div class="report-column-principale">
                                 <h4>Classifica Totale</h4>
                                 {% if dati_stat.top_spese_totali %}
-                                    <div class="report-column">
-                                        <table>
-                                            <thead><tr>
-                                                <th>Data</th>
-                                                <th>Categoria/Desc.</th>
-                                                <th>Pagato da</th>
-                                                <th style="text-align: right;">Importo</th>
-                                                <th style="text-align: right;">% su Entrate</th>
-                                                <th style="text-align: right;">% su Spese</th>
-                                            </tr></thead>
-                                            <tbody>
-                                                {% for spesa in dati_stat.top_spese_totali %}
-                                                <tr>
-                                                    <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
-                                                    <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
-                                                    <td class="pagato-da-{{ spesa.pagato_da }}">{{ spesa.pagato_da }}</td>
-                                                    <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
-                                                    <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_entrate) }}%</small></td>
-                                                    <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                    <div class="table-responsive-wrapper">
+                                        <div class="report-column">
+                                            <table>
+                                                <thead><tr>
+                                                    <th>Data</th>
+                                                    <th>Categoria/Desc.</th>
+                                                    <th>Pagato da</th>
+                                                    <th style="text-align: right;">Importo</th>
+                                                    <th style="text-align: right;">% su Entrate</th>
+                                                    <th style="text-align: right;">% su Spese</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    {% for spesa in dati_stat.top_spese_totali %}
+                                                    <tr>
+                                                        <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                                        <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
+                                                        <td class="pagato-da-{{ spesa.pagato_da }}">{{ spesa.pagato_da }}</td>
+                                                        <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                                                        <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_entrate) }}%</small></td>
+                                                        <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 {% else %}
                                     <p class="no-data">Nessuna spesa trovata in questo periodo.</p>
@@ -277,24 +313,26 @@
                                 <div class="report-column">
                                     <h4>Top Spese Giacomo</h4>
                                     {% if dati_stat.top_spese_giacomo %}
-                                        <table>
-                                            <thead><tr>
-                                                <th>Data</th>
-                                                <th>Categoria/Desc.</th>
-                                                <th style="text-align: right;">Importo</th>
-                                                <th style="text-align: right;">% su Spese</th>
-                                            </tr></thead>
-                                            <tbody>
-                                                {% for spesa in dati_stat.top_spese_giacomo %}
-                                                <tr>
-                                                    <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
-                                                    <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
-                                                    <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
-                                                    <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive-wrapper">
+                                            <table>
+                                                <thead><tr>
+                                                    <th>Data</th>
+                                                    <th>Categoria/Desc.</th>
+                                                    <th style="text-align: right;">Importo</th>
+                                                    <th style="text-align: right;">% su Spese</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    {% for spesa in dati_stat.top_spese_giacomo %}
+                                                    <tr>
+                                                        <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                                        <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
+                                                        <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                                                        <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     {% else %}
                                         <p class="no-data">Nessuna spesa trovata per Giacomo in questo periodo.</p>
                                     {% endif %}
@@ -302,24 +340,26 @@
                                 <div class="report-column">
                                     <h4>Top Spese Erica</h4>
                                     {% if dati_stat.top_spese_erica %}
-                                        <table>
-                                            <thead><tr>
-                                                <th>Data</th>
-                                                <th>Categoria/Desc.</th>
-                                                <th style="text-align: right;">Importo</th>
-                                                <th style="text-align: right;">% su Spese</th>
-                                            </tr></thead>
-                                            <tbody>
-                                                {% for spesa in dati_stat.top_spese_erica %}
-                                                <tr>
-                                                    <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
-                                                    <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
-                                                    <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
-                                                    <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
-                                                </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
+                                        <div class="table-responsive-wrapper">
+                                            <table>
+                                                <thead><tr>
+                                                    <th>Data</th>
+                                                    <th>Categoria/Desc.</th>
+                                                    <th style="text-align: right;">Importo</th>
+                                                    <th style="text-align: right;">% su Spese</th>
+                                                </tr></thead>
+                                                <tbody>
+                                                    {% for spesa in dati_stat.top_spese_erica %}
+                                                    <tr>
+                                                        <td class="cella-data">{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                                                        <td>{{ spesa.categoria }}{% if spesa.descrizione %}<br><small style="color: #666;">{{ spesa.descrizione }}</small>{% endif %}</td>
+                                                        <td class="importo">{{ spesa.importo|format_decimali_italiano }}</td>
+                                                        <td class="importo"><small>{{ "%.2f"|format(spesa.perc_su_spese) }}%</small></td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     {% else %}
                                         <p class="no-data">Nessuna spesa trovata per Erica in questo periodo.</p>
                                     {% endif %}

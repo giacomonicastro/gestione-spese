@@ -11,11 +11,10 @@
         h2, h3, h4 { color: #2c3e50; }
         .header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
         .header-container h1 { color: #2c3e50; margin: 0; }
-        /* Contenitore per i bottoni di navigazione */
-        .header-nav-buttons { display: flex; gap: 10px; }
-        .bottone-navigazione { display: inline-block; padding: 8px 15px; background-color: #007bff; color: white !important; text-align: center; text-decoration: none; border-radius: 4px; font-weight: bold; transition: background-color 0.2s ease-in-out; }
+        .header-nav-buttons { display: flex; align-items: center; gap: 10px; } /* Contenitore per i bottoni */
+        .bottone-navigazione { display: inline-block; padding: 8px 15px; background-color: #007bff; color: white !important; text-align: center; text-decoration: none; border-radius: 4px; font-weight: bold; transition: background-color 0.2s ease-in-out; white-space: nowrap; }
         .bottone-navigazione:hover { background-color: #0056b3; text-decoration: none; }
-        .bottone-navigazione.secondary { background-color: #6c757d; } /* Stile per il secondo bottone */
+        .bottone-navigazione.secondary { background-color: #6c757d; }
         .bottone-navigazione.secondary:hover { background-color: #5a6268; }
         .navigazione-mesi { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding: 12px 15px; background-color: #e9ecef; border-radius: 5px; border: 1px solid #dee2e6; }
         .navigazione-mesi a { text-decoration: none; color: #007bff; font-weight: bold; padding: 8px 15px; border-radius: 4px; background-color: #fff; border: 1px solid #007bff; transition: all 0.2s ease-in-out; }
@@ -34,7 +33,7 @@
         .spese-sommario span.totale-persona-valore, .spese-sommario .totale-complessivo p { color: #dc3545; }
         .risparmio-sommario { background-color: #e6f7ff; border-color: #b3d7ff;}
         .risparmio-sommario span.totale-persona-valore, .risparmio-sommario .totale-complessivo p { color: #007bff; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); }
         th, td { border: 1px solid #ddd; padding: 10px 12px; text-align: left; vertical-align: middle; }
         th { background-color: #f8f9fa; font-weight: 600; color: #495057; }
         tr:nth-child(even) { background-color: #fdfdfd; }
@@ -65,19 +64,50 @@
         .messaggio-successo { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .messaggio-errore { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
+
+    <style>
+        @media (max-width: 768px) {
+            body {
+                margin: 10px;
+            }
+            .container {
+                max-width: 100%;
+                padding: 0 5px; 
+            }
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .navigazione-mesi {
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px;
+            }
+            .riquadri-sommario {
+                flex-direction: column;
+            }
+            .riquadri-sommario > div {
+                flex-basis: 100%;
+                min-width: unset;
+            }
+            .table-responsive-wrapper {
+                overflow-x: auto;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="header-container">
-    <h1>{{ titolo }}</h1>
-    <div class="header-nav-buttons">
-        <a href="{{ url_for('delta_annuale') }}" class="bottone-navigazione secondary">Confronto Annuale</a>
-        
-        <a href="{{ url_for('registro_mese', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione secondary">Registro Spese</a>
-        <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
-    </div>
-</div>
-
+            <h1>{{ titolo }}</h1>
+            <div class="header-nav-buttons">
+                <a href="{{ url_for('delta_annuale') }}" class="bottone-navigazione secondary">Confronto Annuale</a>
+                <a href="{{ url_for('registro_mese', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione secondary">Registro Spese</a>
+                <a href="{{ url_for('statistiche') }}" class="bottone-navigazione">Vai a Statistiche</a>
+            </div>
+        </div>
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -130,84 +160,88 @@
 
         {% if entrate_mese_dettagliate is defined %}
             <h2>Riepilogo Entrate</h2>
-            <table id="tabella-entrate">
-                <thead>
-                    <tr>
-                        <th>Tipo Entrata</th>
-                        <th>Giacomo</th>
-                        <th>Erica</th>
-                        <th>Totale Tipo</th>
-                        <th>Dettagli</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-entrate">
-                    {% for entrata_agg in entrate_mese_dettagliate %}
-                    <tr>
-                        <td>{{ entrata_agg['tipo_entrata'] }}</td>
-                        <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
-                        <td>
-                            <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
-                                Vedi Dettagli
-                            </a>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="5" style="text-align:center;">Nessuna entrata registrata per questo mese.</td></tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot id="tfoot-entrate">
-                    <tr>
-                        <th style="text-align:right;">Totale Complessivo:</th>
-                        <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="table-responsive-wrapper">
+                <table id="tabella-entrate">
+                    <thead>
+                        <tr>
+                            <th>Tipo Entrata</th>
+                            <th>Giacomo</th>
+                            <th>Erica</th>
+                            <th>Totale Tipo</th>
+                            <th>Dettagli</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-entrate">
+                        {% for entrata_agg in entrate_mese_dettagliate %}
+                        <tr>
+                            <td>{{ entrata_agg['tipo_entrata'] }}</td>
+                            <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                            <td>
+                                <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
+                                    Vedi Dettagli
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" style="text-align:center;">Nessuna entrata registrata per questo mese.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot id="tfoot-entrate">
+                        <tr>
+                            <th style="text-align:right;">Totale Complessivo:</th>
+                            <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         {% endif %}
 
         <h2>Riepilogo Spese</h2>
         {% if spese_mese_dettagliate is defined %}
-            <table id="tabella-spese">
-                <thead>
-                    <tr>
-                        <th>Categoria Spesa</th>
-                        <th>Giacomo</th>
-                        <th>Erica</th>
-                        <th>Totale Categoria</th>
-                        <th>Dettagli Spese</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody-spese">
-                    {% for spesa_agg in spese_mese_dettagliate %}
-                    <tr>
-                        <td>{{ spesa_agg['categoria'] }}</td>
-                        <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                        <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=True) }}</strong></td>
-                        <td>
-                            <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg['categoria']) }}">
-                                Vedi Dettagli
-                            </a>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="5" style="text-align:center;">Nessuna spesa registrata per questo mese.</td></tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot id="tfoot-spese">
-                    <tr>
-                        <th style="text-align:right;">Totale Complessivo:</th>
-                        <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
-                        <td></td>
-                    </tr>
-                </tfoot>
-            </table>
+            <div class="table-responsive-wrapper">
+                <table id="tabella-spese">
+                    <thead>
+                        <tr>
+                            <th>Categoria Spesa</th>
+                            <th>Giacomo</th>
+                            <th>Erica</th>
+                            <th>Totale Categoria</th>
+                            <th>Dettagli Spese</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-spese">
+                        {% for spesa_agg in spese_mese_dettagliate %}
+                        <tr>
+                            <td>{{ spesa_agg['categoria'] }}</td>
+                            <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                            <td>
+                                <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg['categoria']) }}">
+                                    Vedi Dettagli
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="5" style="text-align:center;">Nessuna spesa registrata per questo mese.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot id="tfoot-spese">
+                        <tr>
+                            <th style="text-align:right;">Totale Complessivo:</th>
+                            <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         {% endif %}
         
         <script>
@@ -256,14 +290,11 @@
                         return response.json();
                     })
                     .then(data => {
-                        console.log("Dati JSON ricevuti:", JSON.stringify(data, null, 2)); 
                         divMessaggioForm.textContent = data.messaggio;
-                        
                         if (data.status === 'successo') {
                             divMessaggioForm.className = 'messaggio-feedback messaggio-successo';
                             formAggiungi.reset(); 
                             aggiornaCampiForm();
-                            
                             if (data.sommario_aggiornato) {
                                 aggiornaElemento('summary-entrate-giacomo', data.sommario_aggiornato.entrate_giacomo_str);
                                 aggiornaElemento('summary-entrate-erica', data.sommario_aggiornato.entrate_erica_str);
@@ -275,21 +306,18 @@
                                 aggiornaElemento('summary-risparmio-erica', data.sommario_aggiornato.risparmio_erica_str);
                                 aggiornaElemento('summary-risparmio-totale', data.sommario_aggiornato.totale_risparmio_str, "Totale: ");
                             }
-
                             if (data.html_tbody_entrate !== undefined && data.html_tfoot_entrate !== undefined) {
                                 const tbodyEntrate = document.getElementById('tbody-entrate');
                                 const tfootEntrate = document.getElementById('tfoot-entrate');
                                 if (tbodyEntrate) { tbodyEntrate.innerHTML = data.html_tbody_entrate; }
                                 if (tfootEntrate) { tfootEntrate.innerHTML = data.html_tfoot_entrate; }
                             }
-
                             if (data.html_tbody_spese !== undefined && data.html_tfoot_spese !== undefined) {
                                 const tbodySpese = document.getElementById('tbody-spese');
                                 const tfootSpese = document.getElementById('tfoot-spese');
                                 if (tbodySpese) { tbodySpese.innerHTML = data.html_tbody_spese; }
                                 if (tfootSpese) { tfootSpese.innerHTML = data.html_tfoot_spese; }
                             }
-
                         } else { 
                             divMessaggioForm.className = 'messaggio-feedback messaggio-errore';
                         }

@@ -1,0 +1,616 @@
+﻿data;descrizione;categoria;importo;pagato_da
+2024-01-01;Gioco ps5;Shopping;37.49;Giacomo
+2024-01-02;Cena;Alimenti;31.4;Giacomo
+2024-01-02;Assicurazione;Finanziamento;74.01;Giacomo
+2024-01-02;Conto corrente;Abbonamenti;0.99;Erica
+2024-01-02;Icloud;Abbonamenti;0.99;Erica
+2024-01-04;Deodorante;Alimenti;3.95;Erica
+2024-01-04;Pillola;Salute;36.4;Erica
+2024-01-04;Md;Alimenti;9.2;Erica
+2024-01-05;Old wild west + cinema;Uscite-Coppia;80.2;Giacomo
+2024-01-06;Pizzoccheri;Alimenti;3.72;Giacomo
+2024-01-06;Pizza;Uscite-Coppia;15;Erica
+2024-01-07;Spesa;Alimenti;16.12;Giacomo
+2024-01-09;Tigros;Uscite-Amici;4.5;Erica
+2024-01-10;Rifornimento;Benzina;73.45;Giacomo
+2024-01-10;Spesa;Alimenti;8.48;Giacomo
+2024-01-10;Proteine;Alimenti;74.82;Giacomo
+2024-01-11;Arese;Shopping;144.75;Erica
+2024-01-11;Rifornimento;Benzina;64.09;Erica
+2024-01-12;Pranzo;Alimenti;7.55;Giacomo
+2024-01-13;Treno + Metro Milano;Viaggi;51.6;Giacomo
+2024-01-13;Found;Uscite-Amici;71.5;Giacomo
+2024-01-13;Acqua Milano ;Viaggi;1.3;Erica
+2024-01-15;Caprizza;Uscite-Amici;18;Erica
+2024-01-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-01-17;Spesa;Alimenti;10.8;Giacomo
+2024-01-17;Treno Roma;Viaggi;100.7;Giacomo
+2024-01-17;Treno Roma;Viaggi;32.9;Erica
+2024-01-18;Scarpe;Shopping;76.95;Erica
+2024-01-18;Bilancio RR;Varie;2.5;Giacomo
+2024-01-19;MD;Alimenti;9.79;Erica
+2024-01-20;Ticket Eremo + merenda;Viaggi;18;Giacomo
+2024-01-20;Officina Hamburger ;Uscite-Coppia;58.4;Giacomo
+2024-01-20;Rifornimento;Benzina;76.28;Giacomo
+2024-01-25;Autentiko;Uscite-Amici;25.5;Erica
+2024-01-22;Cioccolata;Uscite-Amici;2.43;Erica
+2024-01-26;Spesa Esselunga ;Alimenti;29.37;Erica
+2024-01-24;Ricarica vodaphone;Abbonamenti;20;Erica
+2024-01-21;Orecchini;Shopping;24.18;Erica
+2024-01-30;Esselunga;Alimenti;17.4;Erica
+2024-01-30;Rata macchina;Finanziamento;208.98;Erica
+2024-01-23;Spesa;Alimenti;48.46;Giacomo
+2024-01-23;Parrucchiere;Varie;23;Giacomo
+2024-01-23;Dentastix;Varie;36.49;Giacomo
+2024-01-24;Cena;Alimenti;14.03;Giacomo
+2024-01-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-01-28;Playstation + ;Abbonamenti;16.99;Giacomo
+2024-01-28;Cena;Alimenti;28;Giacomo
+2024-01-28;Coffee+spesa Gio;Uscite-Amici;9.4;Giacomo
+2024-01-30;Personal trainer;Abbonamenti;70.2;Giacomo
+2024-01-31;Saldo Telepass;Varie;78.58;Giacomo
+2024-02-01;Casa Roma;Viaggi;32.35;Giacomo
+2024-02-01;Rifornimento;Benzina;80.65;Giacomo
+2024-02-01;Assicurazione;Finanziamento;74.02;Giacomo
+2024-02-01;Conto corrente;Abbonamenti;1;Erica
+2024-02-01;Casa Roma;Viaggi;32;Erica
+2024-02-02;F123;Varie;19.49;Giacomo
+2024-02-03;Cena amici;Uscite-Amici;30;Giacomo
+2024-02-04;Pranzo;Alimenti;18.17;Giacomo
+2024-02-04;Vero Wheat;Uscite-Coppia;45.5;Giacomo
+2024-02-04;The whale;Uscite-Coppia;4.99;Erica
+2024-02-05;Flurry;Alimenti;2.5;Erica
+2024-02-05;Oscar;Alimenti;4.2;Erica
+2024-02-06;Cena ;Alimenti;13.26;Giacomo
+2024-02-07;Apericena + cioccolati italiani ;Uscite-Amici;26.6;Erica
+2024-02-08;Acqua e sapone ;Shopping;26.3;Erica
+2024-02-10;Lenti a contatto;Salute;178.18;Erica
+2024-02-10;Autentiko;Uscite-Coppia;22.5;Giacomo
+2024-02-11;Pranzo + spesa;Alimenti;32.27;Giacomo
+2024-02-12;Esselunga;Alimenti;6;Erica
+2024-02-12;Poke;Uscite-Amici;9.9;Erica
+2024-02-12;Integratori;Alimenti;38.74;Giacomo
+2024-02-13;Pillola;Salute;36.4;Erica
+2024-02-13;Spesa;Alimenti;12.66;Erica
+2024-02-13;Rifornimento;Benzina;77.33;Giacomo
+2024-02-14;Farmacia;Salute;31.25;Giacomo
+2024-02-14;Fiori;Varie;60;Giacomo
+2024-02-14;Linea 88;Uscite-Coppia;49;Giacomo
+2024-02-14;Psicologo;Salute;45;Giacomo
+2024-02-16;Spotify;Abbonamenti;11;Giacomo
+2024-02-17;Cena Oro Roso;Uscite-Coppia;68;Giacomo
+2024-02-18;Spesa Esselunga ;Alimenti;30.01;Erica
+2024-02-20;Sushi ;Uscite-Amici;19.3;Erica
+2024-02-21;Caffè uni;Alimenti;0.6;Erica
+2024-02-21;Cena;Alimenti;16.54;Giacomo
+2024-02-23;Vodafone ;Abbonamenti;25;Erica
+2024-02-23;Psicologo;Salute;45;Giacomo
+2024-02-23;Oscar;Alimenti;3;Erica
+2024-02-24;Spesa;Alimenti;40.32;Giacomo
+2024-02-25;NowTV;Abbonamenti;22.5;Giacomo
+2024-02-25;Rifornimento;Benzina;82.23;Giacomo
+2024-02-25;Poke;Uscite-Amici;29.7;Giacomo
+2024-02-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-02-27;Spesa;Alimenti;29.1;Giacomo
+2024-02-27;Papillon;Uscite-Amici;19.5;Erica
+2024-02-28;Playstation;Abbonamenti;16.99;Giacomo
+2024-02-28;Parrucchiere;Varie;23;Giacomo
+2024-02-28;Esselunga;Alimenti;14.37;Erica
+2024-02-29;Rata macchina ;Finanziamento;208.98;Erica
+2024-03-01;Psicologo;Salute;45;Giacomo
+2024-03-01;Assicurazione;Finanziamento;74.01;Giacomo
+2024-03-02;Cena;Alimenti;25.55;Giacomo
+2024-03-03;Pranzo;Alimenti;14;Giacomo
+2024-03-03;La Bulle;Uscite-Amici;12.5;Giacomo
+2024-03-03;The Sicilian way;Uscite-Amici;12;Giacomo
+2024-03-04;Conto corrente;Abbonamenti;1;Erica
+2024-03-04;Rinnovo palestra;Abbonamenti;361;Giacomo
+2024-03-04;Lavanderia;Varie;5;Giacomo
+2024-03-04;Avena;Alimenti;32.32;Giacomo
+2024-03-05;Rifornimento;Benzina;72.33;Erica
+2024-03-05;VeroWheat;Uscite-Amici;17.5;Erica
+2024-03-05;Action;Shopping;12.36;Erica
+2024-03-06;Rifornimento;Benzina;78.07;Giacomo
+2024-03-07;Cena Crotto;Uscite-Coppia;114;Giacomo
+2024-03-07;Icloud;Abbonamenti;2.99;Erica
+2024-03-07;Cena Crotto;Uscite-Coppia;100;Erica
+2024-03-08;Psicologo;Salute;45;Giacomo
+2024-03-09;Cena;Alimenti;20.02;Giacomo
+2024-03-09;Piadina;Uscite-Coppia;25.9;Giacomo
+2024-03-10;Pranzo;Alimenti;11.04;Giacomo
+2024-03-11;Iphone;Shopping;1369.97;Erica
+2024-03-11;Mediaworld;Shopping;39.89;Erica
+2024-03-12;Spesa;Alimenti;29.64;Giacomo
+2024-03-13;Cena;Alimenti;31.68;Giacomo
+2024-03-13;Pillola;Salute;18.2;Giacomo
+2024-03-15;Psicologo;Salute;45;Giacomo
+2024-03-15;Google One;Abbonamenti;19.99;Giacomo
+2024-03-16;Cena;Alimenti;22.68;Giacomo
+2024-03-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-03-17;Cena;Alimenti;9.06;Giacomo
+2024-03-18;Rifornimento;Benzina;76.85;Giacomo
+2024-03-18;Calzolaio;Varie;20;Giacomo
+2024-03-19;Personal Trainer;Abbonamenti;70.2;Giacomo
+2024-03-19;Regalo Thais;Varie;25.5;Erica
+2024-03-20;Cena;Alimenti;15.36;Giacomo
+2024-03-21;oldwildwest;Uscite-Amici;13.3;Erica
+2024-03-22;multa;Varie;29.85;Erica
+2024-03-22;Psicologo;Salute;45;Giacomo
+2024-03-23;ricarica;Abbonamenti;15;Erica
+2024-03-23;Found;Uscite-Coppia;66.5;Giacomo
+2024-03-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-03-27;Caffè università;Varie;1.5;Erica
+2024-03-27;Uova;Varie;39.89;Giacomo
+2024-03-28;Regalo Babbo;Varie;35;Giacomo
+2024-03-29;Playstation;Abbonamenti;17;Giacomo
+2024-03-29;Rifornimento;Benzina;78.38;Giacomo
+2024-03-29;Psicologo;Salute;45;Giacomo
+2024-03-30;Cena;Alimenti;9;Giacomo
+2024-03-30;Piadineria;Uscite-Coppia;16;Giacomo
+2024-03-27;Esselunga;Alimenti;33.08;Erica
+2024-03-27;Rata macchina;Finanziamento;208.98;Erica
+2024-03-28;Regalo Antonio;Varie;35;Erica
+2024-03-30;Piadineria;Uscite-Coppia;16;Erica
+2024-04-01;Regalo Gaiona;Varie;15.95;Giacomo
+2024-04-02;Conto corrente;Abbonamenti;1;Erica
+2024-04-02;Assicurazione+bollo;Finanziamento;74.01;Giacomo
+2024-04-03;Pizzeria;Uscite-Amici;18.97;Erica
+2024-04-04;gelato;Alimenti;2.8;Erica
+2024-04-04;Anticipo Alpitour;Viaggi;318.6;Giacomo
+2024-04-04;Lavaggio macchina;Varie;20;Giacomo
+2024-04-05;tigros;Alimenti;2.49;Erica
+2024-04-05;Psicologo;Salute;45;Giacomo
+2024-04-06;Spesa;Varie;8.77;Giacomo
+2024-04-06;Tulipani Arese;Uscite-Coppia;8.76;Giacomo
+2024-04-06;Autentiko;Uscite-Coppia;37;Giacomo
+2024-04-06;Tulipani Arese;Uscite-Coppia;7.5;Erica
+2024-04-07;Gelato Arese;Uscite-Coppia;7;Giacomo
+2024-04-07;Cena;Alimenti;14.15;Giacomo
+2024-04-08;Olio macchina;Varie;22.29;Giacomo
+2024-04-08;Icloud;Abbonamenti;2.99;Erica
+2024-04-09;Proteine;Alimenti;82.9;Giacomo
+2024-04-09;Colazione McD;Uscite-Amici;7.48;Erica
+2024-04-09;Pranzo Corso Antincendio;Uscite-Amici;13;Erica
+2024-04-09;Parrucchiere;Varie;23;Giacomo
+2024-04-10;Anticipo Alpitour;Viaggi;318.5;Erica
+2024-04-10;Amazon;Shopping;19.53;Erica
+2024-04-10;Musei vaticani;Viaggi;80;Giacomo
+2024-04-10;Cena;Alimenti;13.79;Giacomo
+2024-04-11;VeroWheat;Uscite-Amici;20;Erica
+2024-04-11;Lunapark;Uscite-Amici;10.6;Erica
+2024-04-11;Rifornimento;Benzina;81.4;Giacomo
+2024-04-11;Pollo Rigamonti;Alimenti;12.67;Giacomo
+2024-04-11;Colosseo;Viaggi;64;Erica
+2024-04-12;Carne grigliata;Alimenti;31.85;Giacomo
+2024-04-12;Psicologo;Salute;45;Giacomo
+2024-04-12;Flurry;Alimenti;2.4;Erica
+2024-04-14;Spesa grigliata;Alimenti;19.35;Giacomo
+2024-04-15;Biglietti 5terre;Viaggi;65;Giacomo
+2024-04-15;Vestiti;Shopping;254.78;Giacomo
+2024-04-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-04-16;Igiene dentale;Salute;90;Erica
+2024-04-18;Pizza;Uscite-Amici;8;Erica
+2024-04-19;Pedemontana;Abbonamenti;4.57;Erica
+2024-04-19;Regalo giada;Varie;10;Erica
+2024-04-19;Psicologo;Salute;45;Giacomo
+2024-04-20;Cinema;Uscite-Coppia;13.8;Erica
+2024-04-20;Esselunga;Alimenti;5.98;Erica
+2024-04-20;OldWildWest;Uscite-Coppia;52.5;Giacomo
+2024-04-20;Farmacia;Salute;31.1;Giacomo
+2024-04-20;Cinema;Uscite-Coppia;14.32;Giacomo
+2024-04-21;Pranzo;Alimenti;9.56;Giacomo
+2024-04-23;Vodafone ;Abbonamenti;15;Erica
+2024-04-25;Arese;Shopping;83.49;Erica
+2024-04-25;Rifornimento;Benzina;79.44;Giacomo
+2024-04-25;Gelato Arese;Uscite-Coppia;7;Giacomo
+2024-04-25;Shopping Arese;Shopping;102.58;Giacomo
+2024-04-26;Cinque Terre;Viaggi;28.26;Erica
+2024-04-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-04-26;5 terre;Viaggi;52.7;Giacomo
+2024-04-28;Spesa;Alimenti;34.54;Giacomo
+2024-04-30;Amazon ;Shopping;10.99;Erica
+2024-04-30;Rata macchina;Finanziamento;208.98;Erica
+2024-04-29;Psicologo;Salute;45;Giacomo
+2024-05-01;Rifornimento;Benzina;84.94;Giacomo
+2024-05-01;conto corrente;Abbonamenti;1;Erica
+2024-05-02;Regalo Erica;Varie;201.86;Giacomo
+2024-05-02;Casa Roma;Viaggi;129;Giacomo
+2024-05-02;Bollo+Assicurazione;Finanziamento;74.01;Giacomo
+2024-05-02;Telepass;Viaggi;3.49;Giacomo
+2024-05-02;old wild west;Uscite-Amici;14.8;Erica
+2024-05-02;Casa Roma;Viaggi;128.5;Erica
+2024-05-03;Psicologo;Salute;45;Giacomo
+2024-05-04;Ramen;Uscite-Coppia;77.5;Giacomo
+2024-05-05;Spesa;Alimenti;29.02;Giacomo
+2024-05-06;Pillola;Salute;36.4;Erica
+2024-05-07;icloud;Abbonamenti;2.99;Erica
+2024-05-08;Linea88;Uscite-Coppia;47.5;Erica
+2024-05-09;Caramelle;Alimenti;2.73;Erica
+2024-05-10;sushi;Uscite-Amici;19.6;Erica
+2024-05-10;Psicologo;Salute;45;Giacomo
+2024-05-13;Roma;Viaggi;170.64;Erica
+2024-05-13;Spese Roma;Viaggi;254.92;Giacomo
+2024-05-15;Rifornimento;Benzina;82.91;Giacomo
+2024-05-15;Rifornimento;Benzina;84.49;Erica
+2024-05-15;Eurospin spesa;Alimenti;10.83;Erica
+2024-05-16;Cena;Alimenti;14.54;Giacomo
+2024-05-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-05-17;ChatGPT;Varie;23.21;Giacomo
+2024-05-18;Spesa;Alimenti;22.16;Giacomo
+2024-05-18;Regalo Chicco;Varie;20;Giacomo
+2024-05-18;Regalo Chicco;Varie;50;Erica
+2024-05-18;Muffin McDonalds;Alimenti;1;Erica
+2024-05-22;broccoli tigros;Alimenti;1.49;Erica
+2024-05-22;Benagol;Salute;9.4;Erica
+2024-05-22;MD spesa;Alimenti;8.56;Erica
+2024-05-22;Eurospin spesa;Alimenti;17.3;Erica
+2024-05-23;Psicologo;Salute;45;Giacomo
+2024-05-23;Vodafone;Abbonamenti;20;Erica
+2024-05-24;Spesa;Alimenti;34.71;Giacomo
+2024-05-24;Letto Gaia;Shopping;31.19;Erica
+2024-05-25;Cena pale;Uscite-Amici;55;Giacomo
+2024-05-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-05-26;Gelato;Alimenti;22;Giacomo
+2024-05-26;Muffin McDonalds;Alimenti;1;Erica
+2024-05-26;Rifornimento;Benzina;81.56;Giacomo
+2024-05-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-05-27; Esselunga ;Alimenti;12.5;Erica
+2024-05-27;Farmacia;Salute;24.9;Giacomo
+2024-05-28;Colazione;Uscite-Amici;2.3;Erica
+2024-05-28;Autolavaggio;Benzina;22;Erica
+2024-05-28;Girasole;Shopping;7.5;Erica
+2024-05-28;Calze Ritmo;Shopping;7.99;Giacomo
+2024-05-28;Play;Abbonamenti;16.99;Giacomo
+2024-05-29;Esselunga;Alimenti;12.93;Erica
+2024-05-30;Rata macchina;Finanziamento;208.98;Erica
+2024-05-30;Eurospin spesa;Alimenti;18.24;Erica
+2024-05-30;Spesa;Alimenti;33.86;Giacomo
+2024-05-30;Psicologo;Salute;45;Giacomo
+2024-05-30;Personal trainer;Abbonamenti;70.2;Giacomo
+2024-06-01;Found;Uscite-Coppia;70;Giacomo
+2024-06-01;conto corrente;Abbonamenti;1;Erica
+2024-06-02;Spesa torte;Alimenti;41.1;Giacomo
+2024-06-02;Integratori;Alimenti;70.98;Giacomo
+2024-06-02;Eurospin;Alimenti;3.94;Erica
+2024-06-03;Bollo+Assicurazione;Finanziamento;74.01;Giacomo
+2024-06-06;Casa Croazia;Viaggi;48.76;Giacomo
+2024-06-06;Parrucchiere;Varie;23;Giacomo
+2024-06-07;Rifornimento;Benzina;80.72;Giacomo
+2024-06-07;Psicologo;Salute;45;Giacomo
+2024-06-07;Icloud;Abbonamenti;2.99;Erica
+2024-06-08;Spesa ;Alimenti;46.67;Giacomo
+2024-06-09;oscar;Varie;1.7;Erica
+2024-06-10;Spesa;Alimenti;26.61;Giacomo
+2024-06-11;Biglietti laghi;Viaggi;80;Giacomo
+2024-06-11;flurry;Alimenti;2;Erica
+2024-06-11;Veterinario;Varie;180;Giacomo
+2024-06-12;Scarpe;Shopping;49.41;Giacomo
+2024-06-13;Max Factory;Shopping;14.96;Erica
+2024-06-13;Spesa;Alimenti;28.91;Giacomo
+2024-06-13;NowTV;Abbonamenti;22.5;Giacomo
+2024-06-14;flurry;Alimenti;2;Erica
+2024-06-14;Spesa;Alimenti;15.27;Giacomo
+2024-06-14;Psicologo;Salute;45;Giacomo
+2024-06-15;Panettiere;Viaggi;7.3;Erica
+2024-06-15;Bistro Antonio;Viaggi;42.5;Erica
+2024-06-16;Colazione;Viaggi;7.75;Erica
+2024-06-16;Souvenir;Viaggi;7.28;Erica
+2024-06-16;Gelato;Viaggi;3;Erica
+2024-06-16;Autogrill;Viaggi;4.88;Erica
+2024-06-16;Spesa Croazia;Viaggi;180.4;Giacomo
+2024-06-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-06-17;Scarpe;Shopping;146.98;Giacomo
+2024-06-18;Spesa;Alimenti;20.91;Giacomo
+2024-06-18;Vodafone;Abbonamenti;20;Erica
+2024-06-19;Spesa;Alimenti;7.18;Giacomo
+2024-06-20;RCA ;Varie;357.5;Erica
+2024-06-21;Psicologo;Salute;45;Giacomo
+2024-06-22;Flurry;Alimenti;1.9;Erica
+2024-06-22;Rifornimento;Benzina;20;Giacomo
+2024-06-22;Spesa cena;Alimenti;25.5;Giacomo
+2024-06-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-06-26;cena lavoro ;Uscite-Amici;20.3;Erica
+2024-06-29;Gelmarket profitterol;Alimenti;11.7;Erica
+2024-06-29;Regalo Simo;Varie;30;Erica
+2024-06-30;Rata Macchina;Finanziamento;208.98;Erica
+2024-06-28;Psicologo;Salute;45;Giacomo
+2024-06-28;Regalo Simo;Varie;28;Giacomo
+2024-06-28;Spesa;Alimenti;22.7;Giacomo
+2024-06-29;PS;Abbonamenti;16.99;Giacomo
+2024-06-29;Spesa;Alimenti;11.79;Giacomo
+2024-07-01;Bollo+Assicurazione;Finanziamento;74.01;Giacomo
+2024-07-01;conto corrente;Abbonamenti;1;Erica
+2024-07-01;Bollo;Varie;108.46;Erica
+2024-07-03;Visita certificato medico;Salute;40;Giacomo
+2024-07-04;Pillola + moment;Salute;49.4;Erica
+2024-07-04;Eurospin;Alimenti;9.67;Erica
+2024-07-04;Psicologo;Salute;49;Giacomo
+2024-07-05;InsideOut2;Uscite-Coppia;17.9;Erica
+2024-07-05;Autolavaggio;Varie;20;Giacomo
+2024-07-06;Cena festa Binago;Uscite-Coppia;45;Giacomo
+2024-07-06;Cagate Ikea;Shopping;7.25;Giacomo
+2024-07-07;Rifornimento;Benzina;67.68;Erica
+2024-07-08;Icloud;Abbonamenti;2.99;Erica
+2024-07-09;Spesa;Alimenti;26.69;Giacomo
+2024-07-10;Spesa x cinema;Alimenti;10;Erica
+2024-07-10;Cinema;Uscite-Coppia;6.1;Giacomo
+2024-07-11;Pizza;Uscite-amici;7;Erica
+2024-07-12;Cena;Alimenti;16.34;Giacomo
+2024-07-16;Compleanno Francesco ;Uscite-Amici;20.68;Erica
+2024-07-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-07-16;Psicologo;Salute;49;Giacomo
+2024-07-17;Adaci;Varie;80;Giacomo
+2024-07-18;Cena;Alimenti;21.58;Giacomo
+2024-07-19;Proteine;Alimenti;80.41;Giacomo
+2024-07-19;Parrucchiere;Varie;23;Giacomo
+2024-07-20;Vestito matrimonio andre;Shopping;34.19;Erica
+2024-07-20;Old wild west;Uscite-Coppia;46;Giacomo
+2024-07-21;Cena;Alimenti;16.46;Giacomo
+2024-07-21;Rifornimento;Benzina;82.82;Giacomo
+2024-07-24;Tezenis;Shopping;48.16;Erica
+2024-07-24;Eurospin;Alimenti;28.17;Erica
+2024-07-24;Md;Alimenti;19.57;Erica
+2024-07-25;Vodafone;Abbonamenti;20;Erica
+2024-07-25;Scarpe Matrimonio andre;Shopping;18;Erica
+2024-07-25;Tagliando;Varie;425.93;Giacomo
+2024-07-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-07-26;Spesa;Alimenti;24.3;Giacomo
+2024-07-27;Mcdonald;Uscite-Coppia;10.9;Giacomo
+2024-07-27;Uscita Gio;Uscite-amici;36.5;Giacomo
+2024-07-28;Ps plus;Abbonamenti;16.99;Giacomo
+2024-07-26;Iper Varese;Shopping;22.65;Erica
+2024-07-29;Gelateria;Uscite-amici;3;Erica
+2024-07-30;Rata macchina;Finanziamento;208.98;Erica
+2024-07-30;Regalo Francesco;Varie;19;Erica
+2024-07-31;Telepass;Viaggi;142.3;Giacomo
+2024-08-01;Psicologo;Salute;49;Giacomo
+2024-08-01;Bollo+Assicurazione;Finanziamento;74.01;Giacomo
+2024-08-03;Gelato;Uscite-Coppia;7;Giacomo
+2024-08-03;Spesa;Alimenti;10.66;Giacomo
+2024-08-04;Spesa;Alimenti;9.68;Giacomo
+2024-08-04;Rifornimento;Benzina;83.75;Giacomo
+2024-08-06;Saldo vacanza;Viaggi;901.8;Giacomo
+2024-08-07;Assicurazione;Varie;692.85;Giacomo
+2024-08-08;Psicologo;Salute;49;Giacomo
+2024-08-08;Spesa;Alimenti;1.98;Giacomo
+2024-08-01;Flurry;Alimenti;2.4;Erica
+2024-08-01;Vodafone;Abbonamenti;11;Erica
+2024-08-01;Conto corrente;Abbonamenti;1;Erica
+2024-08-02;Gelato;Uscite-Amici;3.5;Erica
+2024-08-03;Action;Shopping;4.82;Erica
+2024-08-01;Pizza;Uscite-Amici;7;Erica
+2024-08-06;Saldo Egitto;Viaggi;902.2;Erica
+2024-08-07;Icloud;Abbonamenti;2.99;Erica
+2024-08-12;Eurospin;Alimenti;12.22;Erica
+2024-08-12;Gelato;Uscite-Amici;3;Erica
+2024-08-14;MD;Alimenti;11.74;Erica
+2024-08-17;Gelato;Uscite-Coppia;6;Erica
+2024-08-18;Amazon crema solare;Viaggi;12.99;Erica
+2024-08-18;Esselunga doposole;Viaggi;19.64;Erica
+2024-08-18;Farmacia;Viaggi;33.45;Erica
+2024-08-19;Esselunga probiotici;Viaggi;16.32;Erica
+2024-08-19;Das;Uscite-Amici;5.35;Erica
+2024-08-19;Pizza;Uscite-Amici;7.1;Erica
+2024-08-24;Escursione;Viaggi;45;Erica
+2024-08-28;Contanti (Sim-Pinne-Mance-Pinne-Pinnex2-Pinnex2);Viaggi;60;Erica
+2024-08-14;Spesa Ferragosto;Uscite-Amici;27;Giacomo
+2024-08-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-08-16;Parrucchiere;Varie;23;Giacomo
+2024-08-17;Rifornimento;Benzina;83.21;Giacomo
+2024-08-17;Gelato;Uscite-Amici;22.7;Giacomo
+2024-08-19;Gomme + filtro aria;Varie;122.98;Giacomo
+2024-08-28;Spese Egitto;Viaggi;95.16;Giacomo
+2024-08-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-08-29;Spesa;Alimenti;16.02;Giacomo
+2024-08-31;Spese Monza;Uscite-Coppia;65.5;Giacomo
+2024-08-31;Compleanno Tia;Uscite-Amici;29.72;Giacomo
+2024-08-30;Cappello F1;Shopping;60;Erica
+2024-08-29;tinta;Shopping;4.35;Erica
+2024-08-30;Rata macchina;Finanziamento;208.98;Erica
+2024-08-31;Panini x monza;Alimenti;5.45;Erica
+2024-09-01;Rifornimento;Benzina;76.21;Giacomo
+2024-09-01;Parcheggio Monza;Varie;30;Giacomo
+2024-09-01;Conto corrente;Abbonamenti;1;Erica
+2024-09-02;Bollo;Finanziamento;74.01;Giacomo
+2024-09-02;Bollo;Varie;211.53;Giacomo
+2024-09-03;Revisione auto;Varie;155.34;Giacomo
+2024-09-03;Regalo Tia;Varie;10;Giacomo
+2024-09-03;Insubria iscrizione;Varie;156.9;Erica
+2024-09-04;Spesa;Alimenti;19.23;Giacomo
+2024-09-05;Regalo matrimonio;Varie;100;Giacomo
+2024-09-05;Parrucchiere;Varie;20;Giacomo
+2024-09-05;Shopping matrimonio;Shopping;298;Giacomo
+2024-09-05;Regalo matrimonio;Varie;100;Erica
+2024-09-06;Multa;Varie;139;Giacomo
+2024-09-07;Icloud;Abbonamenti;2.99;Erica
+2024-09-09;Cover;Shopping;8.99;Giacomo
+2024-09-10;Cena;Alimenti;14.43;Giacomo
+2024-09-13;Colazione Federica ;Uscite-Amici;3.5;Erica
+2024-09-14;Spesa;Alimenti;5.59;Giacomo
+2024-09-14;Rifornimento;Benzina;32.24;Giacomo
+2024-09-14;MD ;Alimenti;11.26;Erica
+2024-09-15;Spesa;Alimenti;9.85;Giacomo
+2024-09-16;Arese;Shopping;3.5;Erica
+2024-09-16;Regalo Leonardo;Varie;10.7;Erica
+2024-09-16;Spesa;Alimenti;30.69;Giacomo
+2024-09-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-09-16;Kiko;Shopping;9.99;Erica
+2024-09-16;Regalo Luca;Varie;9;Erica
+2024-09-17;Spesa;Alimenti;13.04;Giacomo
+2024-09-17;Disney+;Abbonamenti;1.99;Giacomo
+2024-09-17;Panino uni;Alimenti;5;Erica
+2024-09-17;Regalo Bianca ;Varie;20;Erica
+2024-09-18;Acqua;Varie;0.94;Erica
+2024-09-20;Birra Tommaso;Uscite-Amici;28.5;Giacomo
+2024-09-21;OldWildWest;Uscite-Coppia;12.6;Giacomo
+2024-09-23;Papillon;Uscite-Amici;12.5;Erica
+2024-09-24;Lavanderia;Varie;11;Giacomo
+2024-09-24;Spesa;Alimenti;26.16;Erica
+2024-09-25;Farmacia;Salute;47.1;Erica
+2024-09-26;Rifornimento;Benzina;77.1;Giacomo
+2024-09-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-09-26;Farmacia;Salute;13.6;Erica
+2024-09-27;Spesa;Alimenti;11.57;Giacomo
+2024-09-27;NowTV;Abbonamenti;32.5;Giacomo
+2024-09-30;Telepass;Varie;1.24;Giacomo
+2024-09-30;Auto;Finanziamento;208.98;Erica
+2024-10-01;Tigros;Alimenti;4.67;Erica
+2024-10-01;Conto corrente;Abbonamenti;1;Erica
+2024-10-02;Papillon;Uscite-Amici;12;Erica
+2024-10-02;Action;Shopping;6.53;Erica
+2024-10-02;Lidl;Alimenti;13.2;Erica
+2024-10-02;Spesa;Alimenti;12.3;Giacomo
+2024-10-06;Rifornimento;Benzina;82.19;Erica
+2024-10-06;Kebap;Uscite-Amici;10;Giacomo
+2024-10-06;Spesa;Alimenti;29.95;Giacomo
+2024-10-07;Icloud;Abbonamenti;2.99;Erica
+2024-10-08;Amazon;Shopping;20.42;Erica
+2024-10-09;Esselunga;Shopping;65.87;Erica
+2024-10-09;Regalo Mateo;Varie;15.2;Erica
+2024-10-09;Disney+;Abbonamenti;40;Giacomo
+2024-10-11;Rifornimento;Benzina;76.34;Giacomo
+2024-10-12;Zoom Torino;Uscite-Coppia;16;Erica
+2024-10-12;Autentiko;Uscite-Coppia;24.5;Giacomo
+2024-10-13;Aspesi;Uscite-Amici;49;Giacomo
+2024-10-13;Spesa;Alimenti;26.87;Giacomo
+2024-10-13;Farmacia;Salute;11.6;Giacomo
+2024-10-13;Zoom;Uscite-Amici;28.4;Giacomo
+2024-10-13;Autogrill;Viaggi;13.8;Giacomo
+2024-10-14;Bricofer;Varie;17.52;Giacomo
+2024-10-14;Cibo compleanno;Varie;25.68;Giacomo
+2024-10-15;Motogp24;Varie;35;Giacomo
+2024-10-15;Autolavaggio;Varie;10;Giacomo
+2024-10-15;Eurospin;Alimenti;12.54;Erica
+2024-10-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-10-16;Scarpe;Shopping;83.99;Erica
+2024-10-18;Spesa;Alimenti;32.61;Giacomo
+2024-10-18;Esselunga;Alimenti;10.67;Erica
+2024-10-19;Found;Uscite-Coppia;68.5;Giacomo
+2024-10-20;Pranzo;Alimenti;9.64;Giacomo
+2024-10-22;Piadineria;Uscite-Coppia;23.5;Giacomo
+2024-10-25;Pizza;Uscite-Amici;12;Erica
+2024-10-25;Palaghiaccio;Uscite-Amici;7.5;Erica
+2024-10-25;Rifornimento;Benzina;77.86;Giacomo
+2024-10-26;Ikea;Shopping;25.3;Erica
+2024-10-26;Rifornimento;Benzina;74.65;Erica
+2024-10-26;Parrucchiere;Varie;23;Giacomo
+2024-10-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-10-26;Found;Uscite-Coppia;22;Giacomo
+2024-10-26;Ikea;Uscite-Coppia;5.4;Giacomo
+2024-10-27;Spesa Esselunga;Alimenti;27.6;Giacomo
+2024-10-29;Spesa Lidl;Alimenti;19.14;Giacomo
+2024-10-31;Telepass;Varie;90.48;Giacomo
+2024-10-31;Rata macchina;Finanziamento;208.98;Erica
+2024-10-31;iCloud;Abbonamenti;4.99;Erica
+2024-11-01;Spesa;Alimenti;19.17;Giacomo
+2024-11-01;Vodafone;Abbonamenti;15;Erica
+2024-11-01;Conto corrente;Abbonamenti;1;Erica
+2024-11-01;Recupero imposta di bollo;Varie;2.85;Erica
+2024-11-02;Esselunga;Alimenti;4.87;Erica
+2024-11-03;Spesa;Alimenti;10.76;Giacomo
+2024-11-06;Spesa;Alimenti;32.61;Giacomo
+2024-11-07;Rifornimento;Benzina;78.03;Giacomo
+2024-11-07;Spesa;Alimenti;30.13;Giacomo
+2024-11-07;Biglietti Torino;Viaggi;16;Giacomo
+2024-11-07;Icloud;Abbonamenti;2.99;Erica
+2024-11-07;Museo Egizio;Viaggi;6;Erica
+2024-11-07;Eurospin;Alimenti;18.66;Erica
+2024-11-08;Bollo;Varie;93.43;Giacomo
+2024-11-08;Multa;Varie;15.39;Giacomo
+2024-11-08;Museo Automobile;Viaggi;16;Erica
+2024-11-09;Spesa;Alimenti;29.28;Giacomo
+2024-11-10;Autogrill;Viaggi;15.5;Giacomo
+2024-11-10;Parcheggio;Viaggi;22.8;Giacomo
+2024-11-10;Biglietti Autobus;Viaggi;3.8;Giacomo
+2024-11-10;Caffè vari;Viaggi;4.7;Giacomo
+2024-11-10;Coca cola Parco del Valentino;Viaggi;2.5;Erica
+2024-11-10;La Piadineria;Uscite-Coppia;16;Erica
+2024-11-11;Regalo mamma;Varie;52.24;Erica
+2024-11-12;Esselunga;Alimenti;5.33;Erica
+2024-11-12;Panettone Maron Glace;Alimenti;12.99;Erica
+2024-11-13;Regalo mamma;Varie;27;Erica
+2024-11-13;Rifornimento;Benzina;77.88;Giacomo
+2024-11-13;Rinazina;Salute;12.2;Giacomo
+2024-11-13;Spesa;Alimenti;8.12;Giacomo
+2024-11-14;Sushi;Uscite-Amici;16.9;Erica
+2024-11-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-11-18;Regalo Martina;Varie;14.5;Erica
+2024-11-19;Spesa;Alimenti;25.31;Giacomo
+2024-11-20;Pillola + moment;Salute;43.2;Erica
+2024-11-21;Action;Shopping;21.74;Erica
+2024-11-21;Calze neve auto;Varie;40;Giacomo
+2024-11-21;Spesa;Alimenti;14.49;Giacomo
+2024-11-21;WeMakeUp;Shopping;14;Erica
+2024-11-23;Autentiko;Uscite-coppia;23.5;Giacomo
+2024-11-23;Tiger;Shopping;7.5;Erica
+2024-11-24;Shopping Arese + gelato;Shopping;74.44;Giacomo
+2024-11-24;Aperitivo;Uscite-amici;14;Giacomo
+2024-11-25;Rifornimento;Benzina;76.36;Giacomo
+2024-11-25;Mattarello;Shopping;18.69;Giacomo
+2024-11-26;Iliad;Abbonamenti;9.99;Giacomo
+2024-11-27;Pantaloni HM;Shopping;20;Giacomo
+2024-11-27;H&M;Shopping;17.24;Erica
+2024-11-28;Spesa;Alimenti;14.2;Giacomo
+2024-11-29;Prime;Abbonamenti;24.95;Erica
+2024-11-30;OldWildWest;Uscite-Coppia;53;Giacomo
+2024-12-02;Cappuccino con Serena;Uscite-Amici;1.3;Erica
+2024-12-02;Esselunga;Alimenti;8.67;Erica
+2024-12-02;Cinesi;Shopping;23.99;Erica
+2024-12-02;Bennet;Alimenti;1.65;Erica
+2024-12-02;Vodafone;Abbonamenti;11;Erica
+2024-12-02;Spesa;Alimenti;45.89;Giacomo
+2024-12-02;Telepass;Varie;1.24;Giacomo
+2024-12-03;Conto corrente;Abbonamenti;1;Erica
+2024-12-03;Piadineria Noemi;Uscite-Amici;9.5;Erica
+2024-12-03;Balconi;Alimenti;9.99;Giacomo
+2024-12-04;Fiera dell'artigianato;Uscite-Coppia;24.9;Erica
+2024-12-04;Fiera dell'artigianato;Uscite-Coppia;51.9;Giacomo
+2024-12-05;Esselunga;Alimenti;11.97;Erica
+2024-12-05;Biscotti;Varie;7;Erica
+2024-12-05;Pranzo;Alimenti;7.68;Giacomo
+2024-12-07;Cagate Cinesi;Varie;3.09;Giacomo
+2024-12-07;Cena Sushi;Uscite-Coppia;65.8;Giacomo
+2024-12-07;Rifornimento;Benzina;77.64;Giacomo
+2024-12-07;iTunes;Abbonamenti;2.99;Erica
+2024-12-08;Cena;Alimenti;19.05;Giacomo
+2024-12-08;Bollo;Varie;93.43;Giacomo
+2024-12-08;Multa;Varie;15.39;Giacomo
+2024-12-10;Proteine;Alimenti;88;Giacomo
+2024-12-10;Arese;Shopping;31.99;Erica
+2024-12-10;Rifornimento;Benzina;25.42;Erica
+2024-12-11;Spesa;Alimenti;10.73;Giacomo
+2024-12-12;Parrucchiere;Varie;23;Giacomo
+2024-12-13;Regalo Erica;Varie;72;Giacomo
+2024-12-13;Regali di natale;Varie;37.28;Erica
+2024-12-13;Panettone per papà;Varie;13.39;Erica
+2024-12-13;Salame per chicco + panettore;Varie;19.67;Erica
+2024-12-14;Mozzarelline esselunga;Alimenti;3.34;Erica
+2024-12-15;Spesa;Alimenti;34.65;Giacomo
+2024-12-15;Now TV + Pizza;Abbonamenti;36;Giacomo
+2024-12-16;Spotify;Abbonamenti;10.99;Giacomo
+2024-12-16;Cena aziendale;Uscite-Amici;8.5;Erica
+2024-12-19;Eurospin;Alimenti;7.85;Erica
+2024-12-22;Colazione Oscar;Uscite-Amici;3.2;Erica
+2025-12-21;Cena comple Gio + casinò;Uscite-Amici;95;Giacomo
+2025-12-21;Regalo Bobò;Varie;5;Giacomo
+2025-12-21;Rifornimento;Benzina;76.46;Giacomo
+2025-12-22;Cena;Alimenti;7.36;Giacomo
+2024-12-20;Regalo Giacomo;Varie;79.99;Erica
+2025-12-23;Spesa;Alimenti;18.7;Giacomo
+2025-12-23;Regali di natale;Varie;26.5;Giacomo
+2025-12-24;Pasticcini Natale;Varie;28.8;Giacomo
+2025-12-26;Spesa;Alimenti;10.9;Giacomo
+2025-12-26;Iliad;Abbonamenti;9.99;Giacomo
+2025-12-27;Gioco play;Varie;35;Giacomo
+2025-12-28;Compleanno Ale;Uscite-Amici;52.2;Giacomo
+2025-12-29;Pizze autentiko;Uscite-Coppia;24.5;Giacomo
+2025-12-30;Spesa capodanno;Alimenti;34.25;Giacomo
+2025-12-31;Rifornimento;Benzina;77.46;Giacomo
+2025-12-31;Pasticcini Capodanno;Varie;42.24;Giacomo
+2025-12-31;Telepass;Varie;2.64;Giacomo
+2024-12-22;Regalo Papà;Varie;28.9;Erica
+2024-12-23;veterinario Gaia;Salute;50;Erica
+2024-12-24;Tigros;Alimenti;8.94;Erica
+2024-12-24;Esselunga;Alimenti;15.37;Erica
+2024-12-29;Libro Amazon Outlander;Shopping;23.75;Erica
+2024-12-30;Pizza Papillon;Uscite-Amici;12;Erica
