@@ -21,6 +21,22 @@
         th { background-color: #f8f9fa; font-weight: 600; color: #495057; }
         tr:nth-child(even) { background-color: #fdfdfd; }
         .descrizione-dettaglio { font-size: 0.9em; color: #6c757d; }
+        
+        /* --- CLASSE PER IL SIMBOLO EURO --- */
+        .importo-valuta {
+            white-space: nowrap;
+        }
+
+        /* --- STILI RESPONSIVE --- */
+        @media (max-width: 768px) {
+            body { margin: 10px; }
+            .container { max-width: 100%; padding: 0 5px; }
+            .header-container { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .navigazione-mesi { flex-direction: column; gap: 10px; }
+            .table-responsive-wrapper {
+                overflow-x: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -30,14 +46,6 @@
             <a href="{{ url_for('index', anno=current_anno, mese=current_mese) }}" class="bottone-navigazione">Torna al Bilancio</a>
         </div>
         
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category if category else 'info' }}" role="alert">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-
         <div class="navigazione-mesi">
             <a href="{{ url_for('registro_mese', anno=anno_prec, mese=mese_prec) }}">&laquo; Mese Prec.</a>
             <h3>{{ nome_mese_corrente }}</h3>
@@ -46,52 +54,56 @@
 
         <div class="registro-container">
             <h2>Spese di Giacomo</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Categoria</th>
-                        <th>Descrizione</th>
-                        <th style="text-align: right;">Importo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for spesa in spese_giacomo %}
-                    <tr>
-                        <td>{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
-                        <td>{{ spesa.categoria }}</td>
-                        <td><span class="descrizione-dettaglio">{{ spesa.descrizione }}</span></td>
-                        <td style="text-align: right; font-weight: bold;">{{ spesa.importo|format_decimali_italiano }}</td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="4" style="text-align:center; padding: 20px;">Nessuna spesa per Giacomo in questo mese.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Descrizione</th>
+                            <th style="text-align: right;">Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for spesa in spese_giacomo %}
+                        <tr>
+                            <td>{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                            <td>{{ spesa.categoria }}</td>
+                            <td><span class="descrizione-dettaglio">{{ spesa.descrizione }}</span></td>
+                            <td class="importo-valuta" style="text-align: right; font-weight: bold;">{{ spesa.importo|format_decimali_italiano }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4" style="text-align:center; padding: 20px;">Nessuna spesa per Giacomo in questo mese.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
             <h2>Spese di Erica</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Data</th>
-                        <th>Categoria</th>
-                        <th>Descrizione</th>
-                        <th style="text-align: right;">Importo</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for spesa in spese_erica %}
-                    <tr>
-                        <td>{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
-                        <td>{{ spesa.categoria }}</td>
-                        <td><span class="descrizione-dettaglio">{{ spesa.descrizione }}</span></td>
-                        <td style="text-align: right; font-weight: bold;">{{ spesa.importo|format_decimali_italiano }}</td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="4" style="text-align:center; padding: 20px;">Nessuna spesa per Erica in questo mese.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Categoria</th>
+                            <th>Descrizione</th>
+                            <th style="text-align: right;">Importo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for spesa in spese_erica %}
+                        <tr>
+                            <td>{{ spesa.data.split('-')[2] }}/{{ spesa.data.split('-')[1] }}/{{ spesa.data.split('-')[0] }}</td>
+                            <td>{{ spesa.categoria }}</td>
+                            <td><span class="descrizione-dettaglio">{{ spesa.descrizione }}</span></td>
+                            <td class="importo-valuta" style="text-align: right; font-weight: bold;">{{ spesa.importo|format_decimali_italiano }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="4" style="text-align:center; padding: 20px;">Nessuna spesa per Erica in questo mese.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

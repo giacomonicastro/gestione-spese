@@ -32,12 +32,23 @@
         td.numerico, th.numerico { text-align: right; }
         .sub-header { background-color: #e9ecef !important; font-weight: bold; text-align: center; }
         tfoot th, tfoot td { font-weight: bold; background-color: #f2f2f2; }
-        /* Stili per le schede (Tabs) */
         .tab-container { border-bottom: 2px solid #dee2e6; margin-bottom: 20px; display: flex; flex-wrap: wrap; }
         .tab-button { background-color: transparent; border: none; padding: 10px 20px; cursor: pointer; font-size: 1.1em; font-weight: bold; color: #6c757d; border-bottom: 3px solid transparent; }
         .tab-button.active { color: #007bff; border-bottom-color: #007bff; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+        .importo-valuta { white-space: nowrap; }
+
+        @media (max-width: 768px) {
+            body { margin: 10px; }
+            .container { max-width: 100%; padding: 0 5px; }
+            .header-container { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .form-selezione-anno { flex-direction: column; align-items: flex-start; }
+            .riquadri-sommario { grid-template-columns: 1fr; }
+            .tab-container { justify-content: flex-start; }
+            .tab-button { flex-grow: 1; text-align: center; }
+            .table-responsive-wrapper { overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
@@ -49,7 +60,7 @@
 
         <div class="form-selezione-anno">
             <label for="seleziona_anno">Anno di Riferimento:</label>
-            <select id="seleziona_anno" onchange="window.location.href='/delta/' + this.value;">
+            <select id="seleziona_anno" onchange="window.location.href='/delta/' + this.value + '?mode={{mode}}';">
                 {% for anno_opt in anni_disponibili %}
                 <option value="{{ anno_opt }}" {% if anno_opt == anno_corrente|string %}selected{% endif %}>{{ anno_opt }}</option>
                 {% endfor %}
@@ -65,7 +76,7 @@
                 <div class="dati-persona">
                     <div class="nome">{{ persona }}</div>
                     <div class="valori">
-                        <span class="valore-anno">{{ riepilogo[persona][tipo].current|format_decimali_italiano }}</span>
+                        <span class="valore-anno importo-valuta">{{ riepilogo[persona][tipo].current|format_decimali_italiano }}</span>
                         <span class="delta-perc delta {{ 'positivo' if (tipo != 'spese' and riepilogo[persona][tipo].delta.abs >= 0) or (tipo == 'spese' and riepilogo[persona][tipo].delta.abs < 0) else 'negativo' }}">
                             ({{ "%.1f"|format(riepilogo[persona][tipo].delta.perc) }}%)
                         </span>
@@ -75,7 +86,7 @@
                 <div class="dati-persona totale-riquadro">
                     <div class="nome">Totale</div>
                     <div class="valori">
-                        <span class="valore-anno">{{ riepilogo['Totale'][tipo].current|format_decimali_italiano }}</span>
+                        <span class="valore-anno importo-valuta">{{ riepilogo['Totale'][tipo].current|format_decimali_italiano }}</span>
                         <span class="delta-perc delta {{ 'positivo' if (tipo != 'spese' and riepilogo['Totale'][tipo].delta.abs >= 0) or (tipo == 'spese' and riepilogo['Totale'][tipo].delta.abs < 0) else 'negativo' }}">
                             ({{ "%.1f"|format(riepilogo['Totale'][tipo].delta.perc) }}%)
                         </span>
@@ -88,157 +99,169 @@
         <div class="tab-container">
             <button class="tab-button active" onclick="openTab(event, 'tabRiepilogoSpese')">Riepilogo Spese</button>
             <button class="tab-button" onclick="openTab(event, 'tabRiepilogoEntrate')">Riepilogo Entrate</button>
+            {% if not is_forecast_view %}
             <button class="tab-button" onclick="openTab(event, 'tabDettaglioSpese')">Dettaglio Mensile Spese</button>
             <button class="tab-button" onclick="openTab(event, 'tabDettaglioEntrate')">Dettaglio Mensile Entrate</button>
+            {% endif %}
         </div>
 
         <div id="tabRiepilogoSpese" class="tab-content active">
             <h2>Confronto Spese per Categoria</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th rowspan="2">Categoria</th>
-                        <th colspan="3" class="sub-header">Giacomo</th>
-                        <th colspan="3" class="sub-header">Erica</th>
-                        <th colspan="3" class="sub-header">Totale</th>
-                    </tr>
-                    <tr>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for categoria, dati in spese_per_categoria|dictsort %}
-                    <tr>
-                        <td>{{ categoria }}</td>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <td class="numerico">{{ dati.previous[p]|format_decimali_italiano }}</td>
-                        <td class="numerico">{{ dati.current[p]|format_decimali_italiano }}</td>
-                        <td class="numerico delta {{'negativo' if dati.delta[p].abs > 0 else 'positivo' if dati.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(dati.delta[p].perc) }}%</td>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Categoria</th>
+                            <th colspan="3" class="sub-header">Giacomo</th>
+                            <th colspan="3" class="sub-header">Erica</th>
+                            <th colspan="3" class="sub-header">Totale</th>
+                        </tr>
+                        <tr>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for categoria, dati in spese_per_categoria|dictsort %}
+                        <tr>
+                            <td>{{ categoria }}</td>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <td class="numerico importo-valuta">{{ dati.previous[p]|format_decimali_italiano }}</td>
+                            <td class="numerico importo-valuta">{{ dati.current[p]|format_decimali_italiano }}</td>
+                            <td class="numerico delta {{'negativo' if dati.delta[p].abs > 0 else 'positivo' if dati.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(dati.delta[p].perc) }}%</td>
+                            {% endfor %}
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="10" style="text-align: center;">Nessuna spesa da confrontare.</td></tr>
                         {% endfor %}
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="10" style="text-align: center;">Nessuna spesa da confrontare.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <div id="tabRiepilogoEntrate" class="tab-content">
             <h2>Confronto Entrate per Tipo</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th rowspan="2">Tipo Entrata</th>
-                        <th colspan="3" class="sub-header">Giacomo</th>
-                        <th colspan="3" class="sub-header">Erica</th>
-                        <th colspan="3" class="sub-header">Totale</th>
-                    </tr>
-                    <tr>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                     {% for tipo, dati in entrate_per_tipo|dictsort %}
-                    <tr>
-                        <td>{{ tipo }}</td>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <td class="numerico">{{ dati.previous[p]|format_decimali_italiano }}</td>
-                        <td class="numerico">{{ dati.current[p]|format_decimali_italiano }}</td>
-                        <td class="numerico delta {{'positivo' if dati.delta[p].abs > 0 else 'negativo' if dati.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(dati.delta[p].perc) }}%</td>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Tipo Entrata</th>
+                            <th colspan="3" class="sub-header">Giacomo</th>
+                            <th colspan="3" class="sub-header">Erica</th>
+                            <th colspan="3" class="sub-header">Totale</th>
+                        </tr>
+                        <tr>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                         {% for tipo, dati in entrate_per_tipo|dictsort %}
+                        <tr>
+                            <td>{{ tipo }}</td>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <td class="numerico importo-valuta">{{ dati.previous[p]|format_decimali_italiano }}</td>
+                            <td class="numerico importo-valuta">{{ dati.current[p]|format_decimali_italiano }}</td>
+                            <td class="numerico delta {{'positivo' if dati.delta[p].abs > 0 else 'negativo' if dati.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(dati.delta[p].perc) }}%</td>
+                            {% endfor %}
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="10" style="text-align: center;">Nessuna entrata da confrontare.</td></tr>
                         {% endfor %}
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="10" style="text-align: center;">Nessuna entrata da confrontare.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
+        {% if not is_forecast_view %}
         <div id="tabDettaglioSpese" class="tab-content">
             <h2>Confronto Mensile Spese</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th rowspan="2" style="vertical-align: middle;">Mese</th>
-                        <th colspan="3" class="sub-header">Giacomo</th>
-                        <th colspan="3" class="sub-header">Erica</th>
-                        <th colspan="3" class="sub-header">Totale</th>
-                    </tr>
-                    <tr>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mese in spese_mensili %}
-                    <tr>
-                        <td>{{ mese.mese_nome }}</td>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <td class="numerico">{{ mese.previous[p]|format_decimali_italiano }}</td>
-                        <td class="numerico">{{ mese.current[p]|format_decimali_italiano }}</td>
-                        <td class="numerico delta {{'negativo' if mese.delta[p].abs > 0 else 'positivo' if mese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(mese.delta[p].perc) }}%</td>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Mese</th>
+                            <th colspan="3" class="sub-header">Giacomo</th>
+                            <th colspan="3" class="sub-header">Erica</th>
+                            <th colspan="3" class="sub-header">Totale</th>
+                        </tr>
+                        <tr>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mese in spese_mensili %}
+                        <tr>
+                            <td>{{ mese.mese_nome }}</td>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <td class="numerico importo-valuta">{{ mese.previous[p]|format_decimali_italiano }}</td>
+                            <td class="numerico importo-valuta">{{ mese.current[p]|format_decimali_italiano }}</td>
+                            <td class="numerico delta {{'negativo' if mese.delta[p].abs > 0 else 'positivo' if mese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(mese.delta[p].perc) }}%</td>
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Media Mensile</th>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <th class="numerico">{{ medie_spese.previous[p]|format_decimali_italiano }}</th>
-                        <th class="numerico">{{ medie_spese.current[p]|format_decimali_italiano }}</th>
-                        <th class="numerico delta {{'negativo' if medie_spese.delta[p].abs > 0 else 'positivo' if medie_spese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(medie_spese.delta[p].perc) }}%</th>
-                        {% endfor %}
-                    </tr>
-                </tfoot>
-            </table>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Media Mensile</th>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <th class="numerico importo-valuta">{{ medie_spese.previous[p]|format_decimali_italiano }}</th>
+                            <th class="numerico importo-valuta">{{ medie_spese.current[p]|format_decimali_italiano }}</th>
+                            <th class="numerico delta {{'negativo' if medie_spese.delta[p].abs > 0 else 'positivo' if medie_spese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(medie_spese.delta[p].perc) }}%</th>
+                            {% endfor %}
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
 
         <div id="tabDettaglioEntrate" class="tab-content">
             <h2>Confronto Mensile Entrate</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th rowspan="2" style="vertical-align: middle;">Mese</th>
-                        <th colspan="3" class="sub-header">Giacomo</th>
-                        <th colspan="3" class="sub-header">Erica</th>
-                        <th colspan="3" class="sub-header">Totale</th>
-                    </tr>
-                    <tr>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                        <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mese in entrate_mensili %}
-                    <tr>
-                        <td>{{ mese.mese_nome }}</td>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <td class="numerico">{{ mese.previous[p]|format_decimali_italiano }}</td>
-                        <td class="numerico">{{ mese.current[p]|format_decimali_italiano }}</td>
-                        <td class="numerico delta {{'positivo' if mese.delta[p].abs > 0 else 'negativo' if mese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(mese.delta[p].perc) }}%</td>
+            <div class="table-responsive-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="vertical-align: middle;">Mese</th>
+                            <th colspan="3" class="sub-header">Giacomo</th>
+                            <th colspan="3" class="sub-header">Erica</th>
+                            <th colspan="3" class="sub-header">Totale</th>
+                        </tr>
+                        <tr>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                            <th class="numerico">{{anno_precedente}}</th><th class="numerico">{{anno_corrente}}</th><th class="numerico">Δ%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for mese in entrate_mensili %}
+                        <tr>
+                            <td>{{ mese.mese_nome }}</td>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <td class="numerico importo-valuta">{{ mese.previous[p]|format_decimali_italiano }}</td>
+                            <td class="numerico importo-valuta">{{ mese.current[p]|format_decimali_italiano }}</td>
+                            <td class="numerico delta {{'positivo' if mese.delta[p].abs > 0 else 'negativo' if mese.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(mese.delta[p].perc) }}%</td>
+                            {% endfor %}
+                        </tr>
                         {% endfor %}
-                    </tr>
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Media Mensile</th>
-                        {% for p in ['Giacomo', 'Erica', 'Totale'] %}
-                        <th class="numerico">{{ medie_entrate.previous[p]|format_decimali_italiano }}</th>
-                        <th class="numerico">{{ medie_entrate.current[p]|format_decimali_italiano }}</th>
-                        <th class="numerico delta {{'positivo' if medie_entrate.delta[p].abs > 0 else 'negativo' if medie_entrate.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(medie_entrate.delta[p].perc) }}%</th>
-                        {% endfor %}
-                    </tr>
-                </tfoot>
-            </table>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Media Mensile</th>
+                            {% for p in ['Giacomo', 'Erica', 'Totale'] %}
+                            <th class="numerico importo-valuta">{{ medie_entrate.previous[p]|format_decimali_italiano }}</th>
+                            <th class="numerico importo-valuta">{{ medie_entrate.current[p]|format_decimali_italiano }}</th>
+                            <th class="numerico delta {{'positivo' if medie_entrate.delta[p].abs > 0 else 'negativo' if medie_entrate.delta[p].abs < 0 else 'neutro' }}">{{ "%.1f"|format(medie_entrate.delta[p].perc) }}%</th>
+                            {% endfor %}
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
         </div>
+        {% endif %}
     </div>
 
     <script>

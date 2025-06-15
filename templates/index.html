@@ -64,8 +64,14 @@
         .messaggio-successo { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .messaggio-errore { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
     </style>
-
+    
     <style>
+        /* Classe generica per importi monetari */
+        .importo-valuta {
+            white-space: nowrap; /* Impedisce di andare a capo tra cifra e simbolo € */
+        }
+    
+        /* Stili per dispositivi mobili */
         @media (max-width: 768px) {
             body {
                 margin: 10px;
@@ -78,6 +84,11 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
+            }
+            .header-nav-buttons {
+                flex-wrap: wrap; /* Permette ai bottoni di andare a capo */
+                justify-content: flex-start; 
+                gap: 5px;
             }
             .navigazione-mesi {
                 flex-direction: column;
@@ -125,24 +136,24 @@
         <div class="riquadri-sommario">
             <div class="entrate-sommario">
                 <h4>Entrate del Mese</h4>
-                <p>Giacomo: <span class="totale-persona-valore" id="summary-entrate-giacomo">{{ entrate_giacomo }}</span></p>
-                <p>Erica: <span class="totale-persona-valore" id="summary-entrate-erica">{{ entrate_erica }}</span></p>
+                <p>Giacomo: <span class="totale-persona-valore importo-valuta" id="summary-entrate-giacomo">{{ entrate_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore importo-valuta" id="summary-entrate-erica">{{ entrate_erica }}</span></p>
                 <hr>
-                <div class="totale-complessivo"><p id="summary-entrate-totale">Totale: {{ totale_entrate_mese }}</p></div>
+                <div class="totale-complessivo"><p class="importo-valuta" id="summary-entrate-totale">Totale: {{ totale_entrate_mese }}</p></div>
             </div>
             <div class="spese-sommario">
                 <h4>Spese del Mese</h4>
-                <p>Giacomo: <span class="totale-persona-valore" id="summary-spese-giacomo">{{ spese_giacomo }}</span></p>
-                <p>Erica: <span class="totale-persona-valore" id="summary-spese-erica">{{ spese_erica }}</span></p>
+                <p>Giacomo: <span class="totale-persona-valore importo-valuta" id="summary-spese-giacomo">{{ spese_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore importo-valuta" id="summary-spese-erica">{{ spese_erica }}</span></p>
                 <hr>
-                <div class="totale-complessivo"><p id="summary-spese-totale">Totale: {{ totale_spese_mese }}</p></div>
+                <div class="totale-complessivo"><p class="importo-valuta" id="summary-spese-totale">Totale: {{ totale_spese_mese }}</p></div>
             </div>
             <div class="risparmio-sommario">
                 <h4>Risparmio del Mese</h4>
-                <p>Giacomo: <span class="totale-persona-valore" id="summary-risparmio-giacomo">{{ risparmio_giacomo }}</span></p>
-                <p>Erica: <span class="totale-persona-valore" id="summary-risparmio-erica">{{ risparmio_erica }}</span></p>
+                <p>Giacomo: <span class="totale-persona-valore importo-valuta" id="summary-risparmio-giacomo">{{ risparmio_giacomo }}</span></p>
+                <p>Erica: <span class="totale-persona-valore importo-valuta" id="summary-risparmio-erica">{{ risparmio_erica }}</span></p>
                 <hr>
-                <div class="totale-complessivo"><p id="summary-risparmio-totale">Totale: {{ risparmio_mese }}</p></div>
+                <div class="totale-complessivo"><p class="importo-valuta" id="summary-risparmio-totale">Totale: {{ risparmio_mese }}</p></div>
             </div>
         </div>
 
@@ -175,9 +186,9 @@
                         {% for entrata_agg in entrate_mese_dettagliate %}
                         <tr>
                             <td>{{ entrata_agg['tipo_entrata'] }}</td>
-                            <td>{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                            <td>{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                            <td><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                            <td class="importo-valuta">{{ entrata_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td class="importo-valuta">{{ entrata_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td class="importo-valuta"><strong>{{ entrata_agg['importo_totale']|format_decimali_italiano(con_euro=True) }}</strong></td>
                             <td>
                                 <a href="{{ url_for('dettagli_tipo_entrata_mese', anno=current_anno, mese=current_mese, nome_tipo_entrata=entrata_agg['tipo_entrata']) }}">
                                     Vedi Dettagli
@@ -191,9 +202,9 @@
                     <tfoot id="tfoot-entrate">
                         <tr>
                             <th style="text-align:right;">Totale Complessivo:</th>
-                            <th id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                            <th id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                            <th id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-entrate-val-giacomo">{{ val_entrate_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-entrate-val-erica">{{ val_entrate_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-entrate-val-totale">{{ val_totale_entrate_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
                             <td></td>
                         </tr>
                     </tfoot>
@@ -218,9 +229,9 @@
                         {% for spesa_agg in spese_mese_dettagliate %}
                         <tr>
                             <td>{{ spesa_agg['categoria'] }}</td>
-                            <td>{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
-                            <td>{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
-                            <td><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=True) }}</strong></td>
+                            <td class="importo-valuta">{{ spesa_agg['importo_giacomo']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td class="importo-valuta">{{ spesa_agg['importo_erica']|format_decimali_italiano(con_euro=True) }}</td>
+                            <td class="importo-valuta"><strong>{{ spesa_agg['importo_totale_categoria']|format_decimali_italiano(con_euro=True) }}</strong></td>
                             <td>
                                 <a href="{{ url_for('dettagli_categoria_mese', anno=current_anno, mese=current_mese, nome_categoria=spesa_agg['categoria']) }}">
                                     Vedi Dettagli
@@ -234,9 +245,9 @@
                     <tfoot id="tfoot-spese">
                         <tr>
                             <th style="text-align:right;">Totale Complessivo:</th>
-                            <th id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
-                            <th id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
-                            <th id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-spese-val-giacomo">{{ val_spese_giacomo_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-spese-val-erica">{{ val_spese_erica_tf|format_decimali_italiano(con_euro=True) }}</th>
+                            <th class="importo-valuta" id="tfoot-spese-val-totale">{{ val_totale_spese_mese_tf|format_decimali_italiano(con_euro=True) }}</th>
                             <td></td>
                         </tr>
                     </tfoot>
