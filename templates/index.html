@@ -66,48 +66,80 @@
     </style>
     
     <style>
-        /* Classe generica per importi monetari */
-        .importo-valuta {
-            white-space: nowrap; /* Impedisce di andare a capo tra cifra e simbolo € */
+    /* Classe generica per importi monetari */
+    .importo-valuta {
+        white-space: nowrap;
+    }
+
+    /* === STILI GLOBALI (Desktop E Mobile) === */
+    /* Palette di colori elegante e coesa per i bottoni */
+
+    /* 1° bottone secondario: Confronto Annuale (Verde Petrolio) */
+    a.bottone-navigazione.secondary:nth-of-type(1) {
+        background-color: #43ef28; /* Teal/Petrolio */
+        border-color: #43ef28;
+    }
+    a.bottone-navigazione.secondary:nth-of-type(1):hover {
+        background-color: #00897b;
+    }
+
+    /* 2° bottone secondario: Registro Spese (Blu Ardesia) */
+    a.bottone-navigazione.secondary:nth-of-type(2) {
+        background-color: #546e7a; /* Blu Ardesia/Grigio */
+        border-color: #546e7a;
+    }
+    a.bottone-navigazione.secondary:nth-of-type(2):hover {
+        background-color: #455a64;
+    }
+
+    /* Bottone primario: Vai a Statistiche (Blu Primario) */
+    a.bottone-navigazione:not(.secondary) {
+        background-color: #007bff; /* Blu classico */
+        border-color: #007bff;
+    }
+    a.bottone-navigazione:not(.secondary):hover {
+        background-color: #0069d9;
+    }
+
+
+    /* === STILI SOLO PER MOBILE === */
+    @media (max-width: 768px) {
+        body {
+            margin: 10px;
         }
-    
-        /* Stili per dispositivi mobili */
-        @media (max-width: 768px) {
-            body {
-                margin: 10px;
-            }
-            .container {
-                max-width: 100%;
-                padding: 0 5px; 
-            }
-            .header-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            .header-nav-buttons {
-                flex-wrap: wrap; /* Permette ai bottoni di andare a capo */
-                justify-content: flex-start; 
-                gap: 5px;
-            }
-            .navigazione-mesi {
-                flex-direction: column;
-                gap: 10px;
-                padding: 10px;
-            }
-            .riquadri-sommario {
-                flex-direction: column;
-            }
-            .riquadri-sommario > div {
-                flex-basis: 100%;
-                min-width: unset;
-            }
-            .table-responsive-wrapper {
-                overflow-x: auto;
-                margin-bottom: 30px;
-            }
+        .container {
+            max-width: 100%;
+            padding: 0 5px; 
         }
-    </style>
+        .header-container {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        .header-nav-buttons {
+            flex-wrap: wrap; 
+            justify-content: center; /* Centra i bottoni su mobile */
+            width: 100%;
+            gap: 8px;
+        }
+        .navigazione-mesi {
+            flex-direction: column;
+            gap: 10px;
+            padding: 10px;
+        }
+        .riquadri-sommario {
+            flex-direction: column;
+        }
+        .riquadri-sommario > div {
+            flex-basis: 100%;
+            min-width: unset;
+        }
+        .table-responsive-wrapper {
+            overflow-x: auto;
+            margin-bottom: 30px;
+        }
+    }
+</style>
 </head>
 <body>
     <div class="container">
