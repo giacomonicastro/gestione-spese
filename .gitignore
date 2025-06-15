@@ -1,5 +1,10 @@
-# Aggiunge il database al file .gitignore
-echo "spese.db" > .gitignore
+# Database
+spese.db
 
-# Aggiunge anche le cartelle di cache di Python (buona pratica)
-echo "__pycache__/" >> .gitignore
+# File generati da Python
+__pycache__/
+*.pyc
+
+# Ambiente virtuale (se ne usi uno localmente)
+venv/
+.env
